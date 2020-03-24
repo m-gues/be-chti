@@ -1,6 +1,6 @@
 #include "gassp72.h"
 
-void timer_callback(void);
+extern void timer_callback(void);
 
 int main(void)
 {

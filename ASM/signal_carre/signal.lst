@@ -1,0 +1,108 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 thumb
+    2 00000000                 area             moncode, code, readonly
+    3 00000000                 export           timer_callback
+    4 00000000         
+    5 00000000 40010C10 
+                       GPIOB_BSRR
+                               equ              0x40010C10  ; Bit Set/Reset reg
+                                                            ister
+    6 00000000         
+    7 00000000         ;fonction principale
+    8 00000000         timer_callback
+                               proc
+    9 00000000 4B05            ldr              r3, =GPIOB_BSRR
+   10 00000002 6819            ldr              r1, [r3]
+   11 00000004 B101            cbz              r1, mise_a_1
+   12 00000006 B919            cbnz             r1, mise_a_0
+   13 00000008                 endp
+   14 00000008         
+   15 00000008         
+   16 00000008         ; mise a 1 de PB1
+   17 00000008         mise_a_1
+                               proc
+   18 00000008 4B03            ldr              r3, =GPIOB_BSRR
+   19 0000000A F04F 0102       mov              r1, #0x00000002
+   20 0000000E 6019            str              r1, [r3]
+   21 00000010                 endp
+   22 00000010         ;
+   23 00000010         mise_a_0
+                               proc
+   24 00000010         ; mise a zero de PB1
+   25 00000010 4B01            ldr              r3, =GPIOB_BSRR
+   26 00000012 F44F 3100       mov              r1, #0x00020000
+   27 00000016 6019            str              r1, [r3]
+   28 00000018                 endp
+   29 00000018         ;
+   30 00000018         
+   31 00000018                 end
+              40010C10 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\obj\signal.d -o.\obj\signal.o -I.\RTE\_Simu -IC:\Users\Marianne\
+AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
+AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__
+EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SET
+A 529" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=sign
+al.lst signal.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+mise_a_0 00000010
+
+Symbol: mise_a_0
+   Definitions
+      At line 23 in file signal.s
+   Uses
+      At line 12 in file signal.s
+Comment: mise_a_0 used once
+mise_a_1 00000008
+
+Symbol: mise_a_1
+   Definitions
+      At line 17 in file signal.s
+   Uses
+      At line 11 in file signal.s
+Comment: mise_a_1 used once
+moncode 00000000
+
+Symbol: moncode
+   Definitions
+      At line 2 in file signal.s
+   Uses
+      None
+Comment: moncode unused
+timer_callback 00000000
+
+Symbol: timer_callback
+   Definitions
+      At line 8 in file signal.s
+   Uses
+      At line 3 in file signal.s
+Comment: timer_callback used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+GPIOB_BSRR 40010C10
+
+Symbol: GPIOB_BSRR
+   Definitions
+      At line 5 in file signal.s
+   Uses
+      At line 9 in file signal.s
+      At line 18 in file signal.s
+      At line 25 in file signal.s
+
+1 symbol
+342 symbols in table

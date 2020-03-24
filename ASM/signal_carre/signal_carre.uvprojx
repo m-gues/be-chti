@@ -338,7 +338,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>STM32F103xB,USE_FULL_LL_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>C:\Users\Marianne\Desktop\BE CHTI\be-chti\ASM\signal_carre</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
