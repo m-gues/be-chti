@@ -16,32 +16,30 @@ ARM Macro Assembler    Page 1
     7 00000000         ;fonction principale
     8 00000000         timer_callback
                                proc
-    9 00000000 4B05            ldr              r3, =GPIOB_BSRR
+    9 00000000 4B07            ldr              r3, =GPIOB_BSRR
    10 00000002 6819            ldr              r1, [r3]
    11 00000004 B101            cbz              r1, mise_a_1
-   12 00000006 B919            cbnz             r1, mise_a_0
-   13 00000008                 endp
-   14 00000008         
-   15 00000008         
-   16 00000008         ; mise a 1 de PB1
-   17 00000008         mise_a_1
-                               proc
-   18 00000008 4B03            ldr              r3, =GPIOB_BSRR
-   19 0000000A F04F 0102       mov              r1, #0x00000002
-   20 0000000E 6019            str              r1, [r3]
-   21 00000010                 endp
-   22 00000010         ;
-   23 00000010         mise_a_0
-                               proc
-   24 00000010         ; mise a zero de PB1
-   25 00000010 4B01            ldr              r3, =GPIOB_BSRR
-   26 00000012 F44F 3100       mov              r1, #0x00020000
-   27 00000016 6019            str              r1, [r3]
-   28 00000018                 endp
-   29 00000018         ;
-   30 00000018         
-   31 00000018                 end
-              40010C10 
+   12 00000006 B921            cbnz             r1, mise_a_0
+   13 00000008         
+   14 00000008         ; mise a 1 de PB1
+   15 00000008         mise_a_1
+   16 00000008 4B05            ldr              r3, =GPIOB_BSRR
+   17 0000000A F04F 0102       mov              r1, #0x00000002
+   18 0000000E 6019            str              r1, [r3]
+   19 00000010 E004            b                fin
+   20 00000012         ;
+   21 00000012         mise_a_0
+   22 00000012         ; mise a zero de PB1
+   23 00000012 4B03            ldr              r3, =GPIOB_BSRR
+   24 00000014 F44F 3100       mov              r1, #0x00020000
+   25 00000018 6019            str              r1, [r3]
+   26 0000001A E7FF            b                fin
+   27 0000001C         ;
+   28 0000001C         fin
+   29 0000001C 4770            bx               lr
+   30 0000001E                 endp
+   31 0000001E                 end
+              00 00 40010C10 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\obj\signal.d -o.\obj\signal.o -I.\RTE\_Simu -IC:\Users\Marianne\
 AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
@@ -55,11 +53,20 @@ al.lst signal.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-mise_a_0 00000010
+fin 0000001C
+
+Symbol: fin
+   Definitions
+      At line 28 in file signal.s
+   Uses
+      At line 19 in file signal.s
+      At line 26 in file signal.s
+
+mise_a_0 00000012
 
 Symbol: mise_a_0
    Definitions
-      At line 23 in file signal.s
+      At line 21 in file signal.s
    Uses
       At line 12 in file signal.s
 Comment: mise_a_0 used once
@@ -67,7 +74,7 @@ mise_a_1 00000008
 
 Symbol: mise_a_1
    Definitions
-      At line 17 in file signal.s
+      At line 15 in file signal.s
    Uses
       At line 11 in file signal.s
 Comment: mise_a_1 used once
@@ -87,7 +94,7 @@ Symbol: timer_callback
    Uses
       At line 3 in file signal.s
 Comment: timer_callback used once
-4 symbols
+5 symbols
 
 
 
@@ -101,8 +108,8 @@ Symbol: GPIOB_BSRR
       At line 5 in file signal.s
    Uses
       At line 9 in file signal.s
-      At line 18 in file signal.s
-      At line 25 in file signal.s
+      At line 16 in file signal.s
+      At line 23 in file signal.s
 
 1 symbol
-342 symbols in table
+343 symbols in table
