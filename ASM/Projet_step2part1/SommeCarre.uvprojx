@@ -415,6 +415,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Sys</GroupName>
+          <Files>
+            <File>
+              <FileName>startup-rvds.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\Src\startup-rvds.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -824,6 +834,16 @@
               <FileName>gassp72.lib</FileName>
               <FileType>4</FileType>
               <FilePath>.\gassp72.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Sys</GroupName>
+          <Files>
+            <File>
+              <FileName>startup-rvds.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\Src\startup-rvds.s</FilePath>
             </File>
           </Files>
         </Group>
