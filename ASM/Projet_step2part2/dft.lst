@@ -9,43 +9,66 @@ ARM Macro Assembler    Page 1
     3 00000000         
     4 00000000                 import           TabSin
     5 00000000                 import           TabCos
-    6 00000000         
-    7 00000000                 export           dft
+    6 00000000                 extern           partRe
+    7 00000000                 extern           partIm
     8 00000000         
-    9 00000000         dft     proc
-   10 00000000         ;on recup l'argument
-   11 00000000         
-   12 00000000         ;mettre l'@ de TabSin et TabCos
-   13 00000000 4906            ldr              r1, =TabSin ;on met @ de TabSin
-                                                            
-   14 00000002 4A07            ldr              r2, =TabCos ; on met l'@ de Tab
-                                                            Cos
+    9 00000000                 export           dft
+   10 00000000         
+   11 00000000         dft     proc
+   12 00000000         ;les arguments : r0 contient k, r1 contient la table du 
+                       signal. On les empile pour éviter qu'ils soient écrasés
+   13 00000000 B401            push             {r0}
+   14 00000002 B402            push             {r1}
    15 00000004         
-   16 00000004         ; on ajoute position et on recup la valeur
-   17 00000004 F931 3010       ldrsh            r3,  [r1,r0, lsl #0x01] ; r3 co
-                                                            ntient la valeur de
-                                                             sin
-   18 00000008 F932 C010       ldrsh            r12,  [r2,r0, lsl #0x01] ; r4 c
-                                                            ontient la valeur d
-                                                            e cos
-   19 0000000C         
-   20 0000000C FB03 F303       mul              r3,r3
-   21 00000010 FB0C FC0C       mul              r12,r12
-   22 00000014         
-   23 00000014 4463            add              r3,r12
-   24 00000016         
-   25 00000016         ; On récupere le résultat
-   26 00000016 4618            mov              r0, r3
-   27 00000018 E7FF            b                fin
-   28 0000001A         
-   29 0000001A         fin
-   30 0000001A 4770            bx               lr
-   31 0000001C                 endp
-   32 0000001C                 end
+   16 00000004         
+   17 00000004 4A09            ldr              r2, =TabCos ;r2 contient l'@ de
+                                                             TabCos
+   18 00000006 F7FF FFFE       bl               partRe      ;
+   19 0000000A 4603            mov              r3, r0      ;r3 contient Re(k)
+   20 0000000C FB83 2303       smull            r2, r3, r3, r3 ;r2 et r3 contie
+                                                            nt Re(k) au carré (
+                                                            little-endian)
+   21 00000010         
+   22 00000010         ;on dépile les deux arguments
+   23 00000010 BC02            pop              {r1}        ;TabSig
+   24 00000012 BC01            pop              {r0}        ;k
+   25 00000014         
+   26 00000014         ;on empile le premier terme de la somme finale
+   27 00000014 B404            push             {r2}
+   28 00000016 B408            push             {r3}
+   29 00000018         
+   30 00000018 4A05            ldr              r2, =TabSin ;r2 contient l'@ de
+                                                             TabSin
+   31 0000001A F7FF FFFE       bl               partRe      ;r0 contient Im(k)
+   32 0000001E         
+   33 0000001E         ;on dépile le premier terme
+   34 0000001E BC08            pop              {r3}
+   35 00000020 BC04            pop              {r2}
+   36 00000022         
+   37 00000022 FBC0 2300       smlal            r2, r3, r0, r0 ;r2 et r3 contie
+                                                            nnent M2(k)
+   38 00000026         
+   39 00000026         
+   40 00000026         ; On récupere le résultat
+   41 00000026 4618            mov              r0, r3      ;r3 contient les 32
+                                                             premiers bits comm
+                                                            e on est en little 
+                                                            endian
+   42 00000028 E7FF            b                fin
+   43 0000002A         fin
+   44 0000002A 4770            bx               lr
+   45 0000002C                 endp
+   46 0000002C                 end
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
+
+
+
+ARM Macro Assembler    Page 2 
+
+
 a\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\AppDat
 a\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__EVAL S
 ETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529"
@@ -61,17 +84,17 @@ dft 00000000
 
 Symbol: dft
    Definitions
-      At line 9 in file dft.s
+      At line 11 in file dft.s
    Uses
-      At line 7 in file dft.s
+      At line 9 in file dft.s
 Comment: dft used once
-fin 0000001A
+fin 0000002A
 
 Symbol: fin
    Definitions
-      At line 29 in file dft.s
+      At line 43 in file dft.s
    Uses
-      At line 27 in file dft.s
+      At line 42 in file dft.s
 Comment: fin used once
 moncode 00000000
 
@@ -94,7 +117,7 @@ Symbol: TabCos
    Definitions
       At line 5 in file dft.s
    Uses
-      At line 14 in file dft.s
+      At line 17 in file dft.s
 Comment: TabCos used once
 TabSin 00000000
 
@@ -102,7 +125,24 @@ Symbol: TabSin
    Definitions
       At line 4 in file dft.s
    Uses
-      At line 13 in file dft.s
+      At line 30 in file dft.s
 Comment: TabSin used once
-2 symbols
-342 symbols in table
+partIm 00000000
+
+Symbol: partIm
+   Definitions
+      At line 7 in file dft.s
+   Uses
+      None
+Comment: partIm unused
+partRe 00000000
+
+Symbol: partRe
+   Definitions
+      At line 6 in file dft.s
+   Uses
+      At line 18 in file dft.s
+      At line 31 in file dft.s
+
+4 symbols
+344 symbols in table

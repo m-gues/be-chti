@@ -3,6 +3,8 @@
 		
 	export partRe
 		
+masque equ 0x3F ; pour faire un modulo 64 
+		
 partRe proc
 	;on recup l'argument
 	; ici r0 contient k, r1 l'adresse de la table du signal, et r2 l'adresse de la table des cosinus. On les empile pour pouvoir réutiliser les registres.
@@ -30,6 +32,7 @@ loop
 
 	
 	mul r3, r12 ;r3=ik
+	and r3, #masque ; r3 contient ik modulo 64 
 	
 	; on ajoute position et on recup la valeur
 	ldrsh 	r1, 	[r1,r3, lsl #0x01] ; r1 contient cos(ik)
@@ -47,6 +50,11 @@ loop
 	b	fin
 	
 fin	
+	; on dépile les arguments qui restent
+	pop {r0}
+	pop {r1}
+	pop {r1}
+	pop {r1}
 	bx		lr
 	endp
 	end
