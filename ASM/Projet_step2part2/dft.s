@@ -3,29 +3,42 @@
 
 	import TabSin
 	import TabCos
+	extern partRe
+	extern partIm
 		
 	export dft
 		
 dft		proc
-	;on recup l'argument
+	;les arguments : r0 contient k, r1 contient la table du signal. On les empile pour éviter qu'ils soient écrasés
+	push {r0}
+	push {r1}
 	
-	;mettre l'@ de TabSin et TabCos
-	ldr 	r1, =TabSin ;on met @ de TabSin
-	ldr 	r2, =TabCos ; on met l'@ de TabCos
 	
-	; on ajoute position et on recup la valeur
-	ldrsh 	r3, 	[r1,r0, lsl #0x01] ; r3 contient la valeur de sin
-	ldrsh 	r12, 	[r2,r0, lsl #0x01] ; r4 contient la valeur de cos
-	
-	mul 	r3,r3
-	mul 	r12,r12
+	 ldr r2, =TabCos ;r2 contient l'@ de TabCos
+	 bl partRe;
+	 mov r3, r0 ;r3 contient Re(k)
+	 smull r2, r3, r3, r3 ;r2 et r3 contient Re(k) au carré
+	 
+	 ;on dépile les deux arguments
+	 pop {r1} ;TabSig
+	 pop {r0} ;k
+	 
+	 ;on empile le premier terme de la somme finale
+	 push {r3}
+	 
+	 ldr r2, =TabSin ;r2 contient l'@ de TabSin
+	 bl partRe;
+	 mov r3, r0 ;r3 contient Im(k)
+	  r3, r3
+	 
+	 
+	 
 
-	add 	r3,r12
+	add 	r3,r2
 	
 	; On récupere le résultat
 	mov		 r0, r3
-	b		fin
-	
+	b		fin	
 fin
 	bx		lr
 	endp
