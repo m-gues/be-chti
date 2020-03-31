@@ -4,6 +4,7 @@
 ".\obj\partre.o"
 ".\obj\trigo.o"
 ".\obj\signal.o"
+".\obj\signal2.o"
 ".\gassp72.lib"
 ".\obj\startup-rvds.o"
 --library_type=microlib --strict --scatter ".\Obj\CHTI.sct"

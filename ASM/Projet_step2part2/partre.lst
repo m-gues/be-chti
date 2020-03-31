@@ -58,17 +58,18 @@ ARM Macro Assembler    Page 1
    38 00000026         ; on ajoute position et on recup la valeur
    39 00000026 F931 1013       ldrsh            r1,  [r1,r3, lsl #0x01] ; r1 co
                                                             ntient cos(ik)
-   40 0000002A F932 201C       ldrsh            r2,  [r2,r12, lsl #0x01] 
-                                                            ; r2 contient x(i)
+   40 0000002A F932 201C       ldrsh            r2,  [r2,r12, lsl #0x01] ; r2 c
+                                                            ontient x(i);;;;;;;
+                                                            ;;;;;
    41 0000002E         
    42 0000002E FB01 F102       mul              r1, r2      ;r1=x(i)cos(ik)
-   43 00000032 4408            add              r0, r1      ;on ajoute r1 à la 
 
 
 
 ARM Macro Assembler    Page 2 
 
 
+   43 00000032 4408            add              r0, r1      ;on ajoute r1 à la 
                                                             valeur de retour
    44 00000034 B401            push             {r0}        ;on empile la valeu
                                                             r de retour

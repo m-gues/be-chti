@@ -37,7 +37,7 @@ loop
 	
 	; on ajoute position et on recup la valeur
 	ldrsh 	r1, 	[r1,r3, lsl #0x01] ; r1 contient cos(ik)
-	ldrsh 	r2, 	[r2,r12, lsl #0x01] ; r2 contient x(i)
+	ldrsh 	r2, 	[r2,r12, lsl #0x01] ; r2 contient x(i);;;;;;;;;;;;
 	
 	mul r1, r2 ;r1=x(i)cos(ik)
 	add r0, r1 ;on ajoute r1 à la valeur de retour

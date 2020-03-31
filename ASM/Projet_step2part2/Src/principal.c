@@ -4,10 +4,9 @@ extern short TabSig;
 
 int main(void)
 {
-	int a =dft(1, TabSig);
-	//for (int k=0;k<64;k++){
-	//	tab[k]=dft(k);
-	//}
+	for (int k=0;k<64-1;k++){
+		tab[k]=dft(k, TabSig);
+	}
 	
 while (1) {
 	
