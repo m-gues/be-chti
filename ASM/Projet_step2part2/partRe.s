@@ -4,7 +4,8 @@
 	export partRe
 		
 masque equ 0x3F ; pour faire un modulo 64 
-		
+N equ 64
+	
 partRe proc
 	;on recup l'argument
 	; ici r0 contient k, r1 l'adresse de la table du signal, et r2 l'adresse de la table des cosinus. On les empile pour pouvoir réutiliser les registres.
@@ -45,7 +46,7 @@ loop
 	
 	;r12 contient la variable d'iteration
 	add r12, #1
-	cmp r12, #64 ; nbe d'itérations
+	cmp r12, #N ; nbe d'itérations
 	bne loop
 	b	fin
 	
