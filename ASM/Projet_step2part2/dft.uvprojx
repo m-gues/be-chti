@@ -397,11 +397,6 @@
               <FileType>2</FileType>
               <FilePath>.\partRe.s</FilePath>
             </File>
-            <File>
-              <FileName>partIm.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\partIm.s</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -834,11 +829,6 @@
               <FileName>partRe.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\partRe.s</FilePath>
-            </File>
-            <File>
-              <FileName>partIm.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\partIm.s</FilePath>
             </File>
           </Files>
         </Group>

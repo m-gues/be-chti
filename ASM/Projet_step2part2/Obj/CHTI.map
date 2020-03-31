@@ -7,10 +7,6 @@ Section Cross References
     principal.o(i.main) refers to dft.o(moncode) for dft
     principal.o(i.main) refers to principal.o(.bss) for tab
     dft.o(moncode) refers to trigo.o(Trigo) for TabSin
-    partre.o(moncode) refers to signal.o(Signal) for TabSig
-    partre.o(moncode) refers to trigo.o(Trigo) for TabCos
-    partim.o(moncode) refers to signal.o(Signal) for TabSig
-    partim.o(moncode) refers to trigo.o(Trigo) for TabSin
     startup-rvds.o(RESET) refers to startup-rvds.o(STACK) for __initial_sp
     startup-rvds.o(RESET) refers to startup-rvds.o(.text) for Reset_Handler
     startup-rvds.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
@@ -35,12 +31,11 @@ Section Cross References
 
 Removing Unused input sections from the image.
 
-    Removing partre.o(moncode), (60 bytes).
-    Removing partim.o(moncode), (60 bytes).
+    Removing partre.o(moncode), (64 bytes).
     Removing signal.o(Signal), (128 bytes).
     Removing startup-rvds.o(HEAP), (512 bytes).
 
-4 unused section(s) (total 760 bytes) removed from the image.
+3 unused section(s) (total 704 bytes) removed from the image.
 
 ==============================================================================
 
@@ -50,19 +45,19 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     Src\principal.c                          0x00000000   Number         0  principal.o ABSOLUTE
     Src\startup-rvds.s                       0x00000000   Number         0  startup-rvds.o ABSOLUTE
     Trigo.asm                                0x00000000   Number         0  trigo.o ABSOLUTE
@@ -70,7 +65,6 @@ Image Symbol Table
     dft.s                                    0x00000000   Number         0  dft.o ABSOLUTE
     handlers.s                               0x00000000   Number         0  handlers.o ABSOLUTE
     init.s                                   0x00000000   Number         0  init.o ABSOLUTE
-    partIm.s                                 0x00000000   Number         0  partim.o ABSOLUTE
     partRe.s                                 0x00000000   Number         0  partre.o ABSOLUTE
     signal.asm                               0x00000000   Number         0  signal.o ABSOLUTE
     RESET                                    0x08000000   Section      236  startup-rvds.o(RESET)
@@ -200,26 +194,26 @@ Memory Map of the image
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x08000000   0x08000000   0x000000ec   Data   RO           33    RESET               startup-rvds.o
-    0x080000ec   0x080000ec   0x00000000   Code   RO           38  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x080000ec   0x080000ec   0x00000004   Code   RO           41    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x080000f0   0x080000f0   0x00000004   Code   RO           44    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO           46    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO           48    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x080000f4   0x080000f4   0x00000008   Code   RO           49    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x080000fc   0x080000fc   0x00000000   Code   RO           51    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x080000fc   0x080000fc   0x00000000   Code   RO           53    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x080000fc   0x080000fc   0x00000004   Code   RO           42    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
-    0x08000100   0x08000100   0x0000004c   Code   RO           34    .text               startup-rvds.o
-    0x0800014c   0x0800014c   0x00000024   Code   RO           55    .text               mc_w.l(init.o)
-    0x08000170   0x08000170   0x0000000e   Code   RO           59    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x0800017e   0x0800017e   0x00000002   Code   RO           60    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08000180   0x08000180   0x0000000e   Code   RO           61    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08000000   0x08000000   0x000000ec   Data   RO           29    RESET               startup-rvds.o
+    0x080000ec   0x080000ec   0x00000000   Code   RO           34  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x080000ec   0x080000ec   0x00000004   Code   RO           37    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x080000f0   0x080000f0   0x00000004   Code   RO           40    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO           42    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO           44    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x080000f4   0x080000f4   0x00000008   Code   RO           45    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x080000fc   0x080000fc   0x00000000   Code   RO           47    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x080000fc   0x080000fc   0x00000000   Code   RO           49    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x080000fc   0x080000fc   0x00000004   Code   RO           38    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000100   0x08000100   0x0000004c   Code   RO           30    .text               startup-rvds.o
+    0x0800014c   0x0800014c   0x00000024   Code   RO           51    .text               mc_w.l(init.o)
+    0x08000170   0x08000170   0x0000000e   Code   RO           55    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0800017e   0x0800017e   0x00000002   Code   RO           56    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08000180   0x08000180   0x0000000e   Code   RO           57    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x0800018e   0x0800018e   0x00000002   PAD
     0x08000190   0x08000190   0x00000020   Code   RO            1    i.main              principal.o
     0x080001b0   0x080001b0   0x00000024   Code   RO           16    moncode             dft.o
-    0x080001d4   0x080001d4   0x00000010   Data   RO           57    Region$$Table       anon$$obj.o
-    0x080001e4   0x080001e4   0x00000100   Data   RO           29    Trigo               trigo.o
+    0x080001d4   0x080001d4   0x00000010   Data   RO           53    Region$$Table       anon$$obj.o
+    0x080001e4   0x080001e4   0x00000100   Data   RO           25    Trigo               trigo.o
 
 
     Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x080002e4, Size: 0x00000500, Max: 0x00005000, ABSOLUTE)
@@ -227,7 +221,7 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000000        -       0x00000100   Zero   RW            2    .bss                principal.o
-    0x20000100        -       0x00000400   Zero   RW           31    STACK               startup-rvds.o
+    0x20000100        -       0x00000400   Zero   RW           27    STACK               startup-rvds.o
 
 
 ==============================================================================

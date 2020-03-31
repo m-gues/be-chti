@@ -7,68 +7,78 @@ ARM Macro Assembler    Page 1
     1 00000000                 thumb
     2 00000000                 area             moncode, code, readonly
     3 00000000         
-    4 00000000                 import           TabCos
-    5 00000000                 import           TabSig
-    6 00000000         
-    7 00000000                 export           partRe
-    8 00000000         
-    9 00000000         partRe  proc
-   10 00000000         ;on recup l'argument
-   11 00000000         
-   12 00000000 F04F 0C00       mov              r12, #0x00
-   13 00000004 E001            b                loop
-   14 00000006 F84D CD04       push             {r12}       ; on met un zéro to
+    4 00000000                 export           partRe
+    5 00000000         
+    6 00000000         partRe  proc
+    7 00000000         ;on recup l'argument
+    8 00000000         ; ici r0 contient k, r1 l'adresse de la table du signal,
+                        et r2 l'adresse de la table des cosinus. On les empile 
+                       pour pouvoir réutiliser les registres.
+    9 00000000 B401            push             {r0}
+   10 00000002 B402            push             {r1}
+   11 00000004 B404            push             {r2}
+   12 00000006         
+   13 00000006 F04F 0C00       mov              r12, #0x00  ;on met la variable
+                                                             d'itération à zéro
+                                                            
+   14 0000000A E001            b                loop
+   15 0000000C F84D CD04       push             {r12}       ; on met un zéro to
                                                             ut en haut de la pi
                                                             le : c'est cette va
                                                             leur qui sera incré
                                                             mentée à la fin de 
                                                             chaque itération
-   15 0000000A         
-   16 0000000A         loop
-   17 0000000A         
-   18 0000000A         ;mettre l'@ de la valeur du signal et de Tabcos
-   19 0000000A 4A0A            ldr              r2, =TabSig ;on met @ de TabSin
-                                                            
-   20 0000000C 490A            ldr              r1, =TabCos ; on met l'@ de Tab
-                                                            Cos
-   21 0000000E         
-   22 0000000E FB0C F300       mul              r3, r12, r0 ;r3=ik
-   23 00000012         
-   24 00000012         ; on ajoute position et on recup la valeur
-   25 00000012 F931 1013       ldrsh            r1,  [r1,r3, lsl #0x01] ; r1 co
+   16 00000010         
+   17 00000010         
+   18 00000010         loop
+   19 00000010         
+   20 00000010         ; on dépile la valeur de retour et les arguments
+   21 00000010 BC01            pop              {r0}        ;valeur de retour
+   22 00000012 BC02            pop              {r1}        ;table des cosinus
+   23 00000014 BC04            pop              {r2}        ;table du signal
+   24 00000016 BC08            pop              {r3}        ;k
+   25 00000018         
+   26 00000018         ;on réempile immédiatement les arguments sans les modifi
+                       er
+   27 00000018 B408            push             {r3}        ;k
+   28 0000001A B404            push             {r2}        ;signal
+   29 0000001C B402            push             {r1}        ;cosinus
+   30 0000001E         
+   31 0000001E         
+   32 0000001E FB03 F30C       mul              r3, r12     ;r3=ik
+   33 00000022         
+   34 00000022         ; on ajoute position et on recup la valeur
+   35 00000022 F931 1013       ldrsh            r1,  [r1,r3, lsl #0x01] ; r1 co
                                                             ntient cos(ik)
-   26 00000016 F932 201C       ldrsh            r2,  [r2,r12, lsl #0x01] 
+   36 00000026 F932 201C       ldrsh            r2,  [r2,r12, lsl #0x01] 
                                                             ; r2 contient x(i)
-   27 0000001A         
-   28 0000001A FB01 F102       mul              r1, r2
-   29 0000001E BC08            pop              {r3}
-   30 00000020 440B            add              r3, r1
-   31 00000022 B408            push             {r3}
-   32 00000024         
-   33 00000024         
-   34 00000024         ;r12 contient la variable d'iteration
-   35 00000024 F10C 0C01       add              r12, #1
-   36 00000028 F1BC 0F40       cmp              r12, #64    ; nbe d'itérations
-   37 0000002C D1ED            bne              loop
-   38 0000002E E7FF            b                fin
-   39 00000030         
-   40 00000030         fin
-   41 00000030         ; On récupere le résultat
-   42 00000030 4618            mov              r0, r3
-   43 00000032 4770            bx               lr
-   44 00000034                 endp
-   45 00000034                 end
-              00000000 
-              00000000 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\obj\partre.d -o.\obj\partre.o -I.\RTE\_Simu -IC:\Users\Marianne\
-AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
+   37 0000002A         
+   38 0000002A FB01 F102       mul              r1, r2      ;r1=x(i)cos(ik)
+   39 0000002E 4408            add              r0, r1      ;on ajoute r1 à la 
+                                                            valeur de retour
+   40 00000030 B401            push             {r0}        ;on empile la valeu
+                                                            r de retour
+   41 00000032         
+   42 00000032         
+   43 00000032         ;r12 contient la variable d'iteration
+   44 00000032 F10C 0C01       add              r12, #1
+   45 00000036 F1BC 0F40       cmp              r12, #64    ; nbe d'itérations
 
 
 
 ARM Macro Assembler    Page 2 
 
 
+   46 0000003A D1E9            bne              loop
+   47 0000003C E7FF            b                fin
+   48 0000003E         
+   49 0000003E         fin
+   50 0000003E 4770            bx               lr
+   51 00000040                 endp
+   52 00000040                 end
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\obj\partre.d -o.\obj\partre.o -I.\RTE\_Simu -IC:\Users\Marianne\
+AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
 AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__
 EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SET
 A 529" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=part
@@ -79,22 +89,22 @@ re.lst partRe.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-fin 00000030
+fin 0000003E
 
 Symbol: fin
    Definitions
-      At line 40 in file partRe.s
+      At line 49 in file partRe.s
    Uses
-      At line 38 in file partRe.s
+      At line 47 in file partRe.s
 Comment: fin used once
-loop 0000000A
+loop 00000010
 
 Symbol: loop
    Definitions
-      At line 16 in file partRe.s
+      At line 18 in file partRe.s
    Uses
-      At line 13 in file partRe.s
-      At line 37 in file partRe.s
+      At line 14 in file partRe.s
+      At line 46 in file partRe.s
 
 moncode 00000000
 
@@ -108,32 +118,9 @@ partRe 00000000
 
 Symbol: partRe
    Definitions
-      At line 9 in file partRe.s
+      At line 6 in file partRe.s
    Uses
-      At line 7 in file partRe.s
+      At line 4 in file partRe.s
 Comment: partRe used once
 4 symbols
-
-
-
-ARM Macro Assembler    Page 1 Alphabetic symbol ordering
-External symbols
-
-TabCos 00000000
-
-Symbol: TabCos
-   Definitions
-      At line 4 in file partRe.s
-   Uses
-      At line 20 in file partRe.s
-Comment: TabCos used once
-TabSig 00000000
-
-Symbol: TabSig
-   Definitions
-      At line 5 in file partRe.s
-   Uses
-      At line 19 in file partRe.s
-Comment: TabSig used once
-2 symbols
-343 symbols in table
+339 symbols in table

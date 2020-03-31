@@ -2,7 +2,6 @@
 ".\obj\principal.o"
 ".\obj\dft.o"
 ".\obj\partre.o"
-".\obj\partim.o"
 ".\obj\trigo.o"
 ".\obj\signal.o"
 ".\gassp72.lib"
