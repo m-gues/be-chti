@@ -31,8 +31,8 @@ dft		proc
 	 bl partRe;r0 contient Im(k)
 	 
 	 ;on dépile le premier terme
-	 pop {r3}
-	 pop {r2}
+	 pop {r3}; access violation ICI
+	 pop {r2} 
 	 
 	 smlal r2, r3, r0, r0 ;r2 et r3 contiennent M2(k)
 	 

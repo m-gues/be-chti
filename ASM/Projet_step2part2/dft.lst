@@ -42,7 +42,8 @@ ARM Macro Assembler    Page 1
    31 0000001A F7FF FFFE       bl               partRe      ;r0 contient Im(k)
    32 0000001E         
    33 0000001E         ;on dépile le premier terme
-   34 0000001E BC08            pop              {r3}
+   34 0000001E BC08            pop              {r3}        ; access violation 
+                                                            ICI
    35 00000020 BC04            pop              {r2}
    36 00000022         
    37 00000022 FBC0 2300       smlal            r2, r3, r0, r0 ;r2 et r3 contie
@@ -62,13 +63,13 @@ ARM Macro Assembler    Page 1
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
 
 
 
 ARM Macro Assembler    Page 2 
 
 
+ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
 a\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\AppDat
 a\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__EVAL S
 ETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529"

@@ -14,8 +14,7 @@ partRe proc
 	push {r2}
 	
 	mov r12, #0x00 ;on met la variable d'itération à zéro
-	b loop
-	push {r12} ; on met un zéro tout en haut de la pile : c'est cette valeur qui sera incrémentée à la fin de chaque itération
+	push {r12} ; on met un zéro tout en haut de la pile : c'est cette valeur qui sera incrémentée à la fin de chaque itération (ie la valeur de retour)
 	
 	
 loop
@@ -36,10 +35,10 @@ loop
 	and r3, #masque ; r3 contient ik modulo 64 
 	
 	; on ajoute position et on recup la valeur
-	ldrsh 	r1, 	[r1,r3, lsl #0x01] ; r1 contient cos(ik)
-	ldrsh 	r2, 	[r2,r12, lsl #0x01] ; r2 contient x(i);;;;;;;;;;;;
+	ldrsh 	r1, 	[r1,r3] ; r1 contient cos(ik)
+	ldrsh 	r2, 	[r2,r12] ; r2 contient x(i)
 	
-	mul r1, r2 ;r1=x(i)cos(ik)
+	mul r1, r2 ;r1=x(i)cos(ik) 
 	add r0, r1 ;on ajoute r1 à la valeur de retour
 	push {r0} ;on empile la valeur de retour
 	
@@ -54,8 +53,7 @@ fin
 	; on dépile les arguments qui restent
 	pop {r0}
 	pop {r1}
-	pop {r1}
-	pop {r1}
+
 	bx		lr
 	endp
 	end
