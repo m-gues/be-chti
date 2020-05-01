@@ -7,7 +7,8 @@ extern short TabSig;
 
 int main(void)
 {
-	for (int k=0;k<64;k++){
+	int k;
+	for (k=0;k<64;k++){
 		printf("%d\n", k);
 		tab[k]=dft(k, &TabSig);
 	}
