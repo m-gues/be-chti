@@ -1,0 +1,152 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 thumb
+    2 00000000                 area             moncode, code, readonly
+    3 00000000         
+    4 00000000                 import           TabSin
+    5 00000000                 import           TabCos
+    6 00000000                 extern           partRe
+    7 00000000                 extern           partIm
+    8 00000000         
+    9 00000000                 export           dft
+   10 00000000         
+   11 00000000         dft     proc
+   12 00000000         
+   13 00000000         ;sauvegarde du contenu des registres r4 à r6 et lr
+   14 00000000 B410            push{r4}
+   15 00000002 B420            push{r5}
+   16 00000004 B440            push{r6}
+   17 00000006 B500            push{lr}
+   18 00000008         
+   19 00000008         
+   20 00000008         ;les arguments : r0 contient k, r1 contient la table du 
+                       signal.
+   21 00000008 4A09            ldr              r2, =TabCos ;r2 contient l'@ de
+                                                             TabCos
+   22 0000000A F7FF FFFE       bl               partRe
+   23 0000000E 4605            mov              r5, r0      ;r5 contient Re(k)
+   24 00000010 FB85 5605       smull            r5, r6, r5, r5 ;r5 et r6 contie
+                                                            nt Re(k) au carré (
+                                                            little-endian)
+   25 00000014         
+   26 00000014 4620            mov              r0, r4      ;on remet k dans r0
+                                                            
+   27 00000016 4A07            ldr              r2, =TabSin ;r2 contient l'@ de
+                                                             TabSin
+   28 00000018 F7FF FFFE       bl               partRe      ;r0 contient Im(k)
+   29 0000001C         
+   30 0000001C FBC0 5600       smlal            r5, r6, r0, r0 ;r5 et r6 contie
+                                                            nnent M2(k)
+   31 00000020         
+   32 00000020         
+   33 00000020         ; On récupere le résultat
+   34 00000020 4630            mov              r0, r6      ;r6 contient les 32
+                                                             bits de poids fort
+                                                             comme on est en li
+                                                            ttle endian, on les
+                                                             place dans r0
+   35 00000022         
+   36 00000022         ;restitution du contenu des registres r4 à r6 et lr
+   37 00000022 F85D EB04       pop{lr}
+   38 00000026 BC40            pop{r6}
+   39 00000028 BC20            pop{r5}
+   40 0000002A BC10            pop{r4}
+   41 0000002C         
+   42 0000002C         
+   43 0000002C         
+   44 0000002C E7FF            b                fin
+   45 0000002E         fin
+   46 0000002E 4770            bx               lr
+   47 00000030                 endp
+   48 00000030                 end
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
+a\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\AppDat
+a\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__EVAL S
+ETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529"
+ --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=dft.lst df
+t.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+dft 00000000
+
+Symbol: dft
+   Definitions
+      At line 11 in file dft.s
+   Uses
+      At line 9 in file dft.s
+Comment: dft used once
+fin 0000002E
+
+Symbol: fin
+   Definitions
+      At line 45 in file dft.s
+   Uses
+      At line 44 in file dft.s
+Comment: fin used once
+moncode 00000000
+
+Symbol: moncode
+   Definitions
+      At line 2 in file dft.s
+   Uses
+      None
+Comment: moncode unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+TabCos 00000000
+
+Symbol: TabCos
+   Definitions
+      At line 5 in file dft.s
+   Uses
+      At line 21 in file dft.s
+Comment: TabCos used once
+TabSin 00000000
+
+Symbol: TabSin
+   Definitions
+      At line 4 in file dft.s
+   Uses
+      At line 27 in file dft.s
+Comment: TabSin used once
+partIm 00000000
+
+Symbol: partIm
+   Definitions
+      At line 7 in file dft.s
+   Uses
+      None
+Comment: partIm unused
+partRe 00000000
+
+Symbol: partRe
+   Definitions
+      At line 6 in file dft.s
+   Uses
+      At line 22 in file dft.s
+      At line 28 in file dft.s
+
+4 symbols
+344 symbols in table
