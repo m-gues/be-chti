@@ -3,8 +3,6 @@
 ".\obj\dft.o"
 ".\obj\partre.o"
 ".\obj\trigo.o"
-".\obj\signal.o"
-".\obj\signal2.o"
 ".\obj\f1p-45.o"
 ".\obj\f17p30_f18p135.o"
 ".\obj\f23p-26_f24p-116.o"

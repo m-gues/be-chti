@@ -20,56 +20,59 @@ ARM Macro Assembler    Page 1
    14 00000000 B410            push{r4}
    15 00000002 B420            push{r5}
    16 00000004 B440            push{r6}
-   17 00000006 B500            push{lr}
-   18 00000008         
-   19 00000008         
-   20 00000008         ;les arguments : r0 contient k, r1 contient la table du 
+   17 00000006 B480            push{r7}
+   18 00000008 F84D 8D04       push{r8}
+   19 0000000C B500            push{lr}
+   20 0000000E         
+   21 0000000E         
+   22 0000000E         ;les arguments : r0 contient k, r1 contient la table du 
                        signal.
-   21 00000008 4A09            ldr              r2, =TabCos ;r2 contient l'@ de
+   23 0000000E 4A0B            ldr              r2, =TabCos ;r2 contient l'@ de
                                                              TabCos
-   22 0000000A F7FF FFFE       bl               partRe
-   23 0000000E 4605            mov              r5, r0      ;r5 contient Re(k)
-   24 00000010 FB85 5605       smull            r5, r6, r5, r5 ;r5 et r6 contie
+   24 00000010 F7FF FFFE       bl               partRe      ;r0 contient Re(k)
+   25 00000014 FB80 7800       smull            r7, r8, r0, r0 ;r7 et r8 contie
                                                             nt Re(k) au carré (
                                                             little-endian)
-   25 00000014         
-   26 00000014 4620            mov              r0, r4      ;on remet k dans r0
+   26 00000018         
+   27 00000018 4620            mov              r0, r4      ;on remet k dans r0
                                                             
-   27 00000016 4A07            ldr              r2, =TabSin ;r2 contient l'@ de
+   28 0000001A 4A09            ldr              r2, =TabSin ;r2 contient l'@ de
                                                              TabSin
-   28 00000018 F7FF FFFE       bl               partRe      ;r0 contient Im(k)
-   29 0000001C         
-   30 0000001C FBC0 5600       smlal            r5, r6, r0, r0 ;r5 et r6 contie
+   29 0000001C F7FF FFFE       bl               partRe      ;r0 contient Im(k)
+   30 00000020         
+   31 00000020 FBC0 7800       smlal            r7, r8, r0, r0 ;r7 et r8 contie
                                                             nnent M2(k)
-   31 00000020         
-   32 00000020         
-   33 00000020         ; On récupere le résultat
-   34 00000020 4630            mov              r0, r6      ;r6 contient les 32
+   32 00000024         
+   33 00000024         
+   34 00000024         ; On récupere le résultat
+   35 00000024 4640            mov              r0, r8      ;r6 contient les 32
                                                              bits de poids fort
                                                              comme on est en li
                                                             ttle endian, on les
                                                              place dans r0
-   35 00000022         
-   36 00000022         ;restitution du contenu des registres r4 à r6 et lr
-   37 00000022 F85D EB04       pop{lr}
-   38 00000026 BC40            pop{r6}
-   39 00000028 BC20            pop{r5}
-   40 0000002A BC10            pop{r4}
-   41 0000002C         
-   42 0000002C         
-   43 0000002C         
-   44 0000002C E7FF            b                fin
-   45 0000002E         fin
-   46 0000002E 4770            bx               lr
-   47 00000030                 endp
-   48 00000030                 end
+   36 00000026         
+   37 00000026         ;restitution du contenu des registres r4 à r6 et lr
+   38 00000026 F85D EB04       pop{lr}
+   39 0000002A F85D 8B04       pop{r8}
+   40 0000002E BC80            pop{r7}
+   41 00000030 BC40            pop{r6}
+   42 00000032 BC20            pop{r5}
+   43 00000034 BC10            pop{r4}
+   44 00000036         
+   45 00000036         
+   46 00000036         
+   47 00000036 E7FF            b                fin
+   48 00000038         fin
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-              00000000 
+   49 00000038 4770            bx               lr
+   50 0000003A                 endp
+   51 0000003A                 end
+              00 00 00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
@@ -92,13 +95,13 @@ Symbol: dft
    Uses
       At line 9 in file dft.s
 Comment: dft used once
-fin 0000002E
+fin 00000038
 
 Symbol: fin
    Definitions
-      At line 45 in file dft.s
+      At line 48 in file dft.s
    Uses
-      At line 44 in file dft.s
+      At line 47 in file dft.s
 Comment: fin used once
 moncode 00000000
 
@@ -121,7 +124,7 @@ Symbol: TabCos
    Definitions
       At line 5 in file dft.s
    Uses
-      At line 21 in file dft.s
+      At line 23 in file dft.s
 Comment: TabCos used once
 TabSin 00000000
 
@@ -129,7 +132,7 @@ Symbol: TabSin
    Definitions
       At line 4 in file dft.s
    Uses
-      At line 27 in file dft.s
+      At line 28 in file dft.s
 Comment: TabSin used once
 partIm 00000000
 
@@ -145,8 +148,8 @@ Symbol: partRe
    Definitions
       At line 6 in file dft.s
    Uses
-      At line 22 in file dft.s
-      At line 28 in file dft.s
+      At line 24 in file dft.s
+      At line 29 in file dft.s
 
 4 symbols
 344 symbols in table

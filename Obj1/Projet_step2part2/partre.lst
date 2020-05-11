@@ -17,69 +17,58 @@ ARM Macro Assembler    Page 1
     8 00000000         
     9 00000000         partRe  proc
    10 00000000         
-   11 00000000         ;sauvegarde du contenu des registres r4 à r6 et lr
-   12 00000000 B410            push{r4}
-   13 00000002 B420            push{r5}
-   14 00000004 B440            push{r6}
-   15 00000006 B500            push{lr}
-   16 00000008         ; ici r0 contient k, r1 l'adresse de la table du signal,
+   11 00000000         ; ici r0 contient k, r1 l'adresse de la table du signal,
                         et r2 l'adresse de la table des cosinus.
-   17 00000008         
-   18 00000008 F04F 0C00       mov              r12, #0x00  ;on met la variable
+   12 00000000         
+   13 00000000 F04F 0C00       mov              r12, #0x00  ;on met la variable
                                                              d'itération à zéro
                                                             
-   19 0000000C 4604            mov              r4, r0      ; on bouge k dans r
+   14 00000004 4604            mov              r4, r0      ; on bouge k dans r
                                                             4
-   20 0000000E F04F 0000       mov              r0, #0x00   ; on met la valeur 
+   15 00000006 F04F 0000       mov              r0, #0x00   ; on met la valeur 
                                                             qu'on renverra a 0
-   21 00000012         
-   22 00000012         
-   23 00000012         loop
-   24 00000012         
-   25 00000012 FB04 F50C       mul              r5, r4, r12 ;r5=ik
-   26 00000016 F005 053F       and              r5, #masque ; r5 contient ik mo
+   16 0000000A         
+   17 0000000A         
+   18 0000000A         loop
+   19 0000000A         
+   20 0000000A FB04 F50C       mul              r5, r4, r12 ;r5=ik
+   21 0000000E F005 053F       and              r5, #masque ; r5 contient ik mo
                                                             dulo 64 
-   27 0000001A         
-   28 0000001A         ; on recupere les valeurs du signal et du cosinus
-   29 0000001A 5F55            ldrsh            r5,  [r2,r5] ; r5 contient cos(
-                                                            ik)
-   30 0000001C F931 600C       ldrsh            r6,  [r1,r12] 
+   22 00000012         
+   23 00000012         ; on recupere les valeurs du signal et du cosinus
+   24 00000012 F932 5015       ldrsh            r5,  [r2,r5, lsl #0x01] ; r5 co
+                                                            ntient cos(ik)
+   25 00000016 F931 601C       ldrsh            r6,  [r1,r12, lsl #0x01] 
                                                             ; r6 contient x(i)
-   31 00000020         
-   32 00000020 FB05 F506       mul              r5, r6      ;r5=x(i)cos(ik) 
-   33 00000024 4428            add              r0, r5      ;on ajoute r1 à la 
-                                                            valeur de retour
-   34 00000026         
-   35 00000026         ;r12 contient la variable d'iteration
-   36 00000026 F10C 0C01       add              r12, #1
-   37 0000002A F1BC 0F40       cmp              r12, #N     ; nbe d'itérations
-   38 0000002E D1F0            bne              loop
-   39 00000030 E7FF            b                fin
-   40 00000032         
-   41 00000032         fin
-   42 00000032         ; Point sur le contenu des registres : r0 = valeur de re
+   26 0000001A         
+   27 0000001A FB05 0006       mla              r0, r5, r6, r0 
+                                                            ;r0+=x(i)cos(ik) 
+   28 0000001E         
+   29 0000001E         ;r12 contient la variable d'iteration
+   30 0000001E F10C 0C01       add              r12, #1
+   31 00000022 F1BC 0F40       cmp              r12, #N     ; nbe d'itérations
+   32 00000026 D1F0            bne              loop
+   33 00000028 E7FF            b                fin
+   34 0000002A         
+   35 0000002A         fin
+   36 0000002A         ; Point sur le contenu des registres : r0 = valeur de re
                        tour, r1 = adresse de la table du signal, r2=adresse de 
                        la table des cosinus, r4 = k, le reste est du stockage t
                        emporaire
-   43 00000032         
-   44 00000032         ;restitution du contenu des registres r4 à r6 et lr
+   37 0000002A         
+   38 0000002A         
+   39 0000002A 4770            bx               lr
+   40 0000002C                 endp
+   41 0000002C                 end
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\obj\partre.d -o.\obj\partre.o -I.\RTE\_Simu -IC:\Users\Marianne\
+AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   45 00000032 F85D EB04       pop{lr}
-   46 00000036 BC40            pop{r6}
-   47 00000038 BC20            pop{r5}
-   48 0000003A BC10            pop{r4}
-   49 0000003C         
-   50 0000003C 4770            bx               lr
-   51 0000003E                 endp
-   52 0000003E                 end
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\obj\partre.d -o.\obj\partre.o -I.\RTE\_Simu -IC:\Users\Marianne\
-AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\
 AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__
 EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SET
 A 529" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=part
@@ -90,21 +79,21 @@ re.lst partRe.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-fin 00000032
+fin 0000002A
 
 Symbol: fin
    Definitions
-      At line 41 in file partRe.s
+      At line 35 in file partRe.s
    Uses
-      At line 39 in file partRe.s
+      At line 33 in file partRe.s
 Comment: fin used once
-loop 00000012
+loop 0000000A
 
 Symbol: loop
    Definitions
-      At line 23 in file partRe.s
+      At line 18 in file partRe.s
    Uses
-      At line 38 in file partRe.s
+      At line 32 in file partRe.s
 Comment: loop used once
 moncode 00000000
 
@@ -135,7 +124,7 @@ Symbol: N
    Definitions
       At line 7 in file partRe.s
    Uses
-      At line 37 in file partRe.s
+      At line 31 in file partRe.s
 Comment: N used once
 masque 0000003F
 
@@ -143,7 +132,7 @@ Symbol: masque
    Definitions
       At line 6 in file partRe.s
    Uses
-      At line 26 in file partRe.s
+      At line 21 in file partRe.s
 Comment: masque used once
 2 symbols
 341 symbols in table

@@ -408,16 +408,6 @@
               <FilePath>.\Trigo.asm</FilePath>
             </File>
             <File>
-              <FileName>signal.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\signal.asm</FilePath>
-            </File>
-            <File>
-              <FileName>signal2.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\signal2.asm</FilePath>
-            </File>
-            <File>
               <FileName>f1p-45.asm</FileName>
               <FileType>2</FileType>
               <FilePath>.\test_DFT\f1p-45.asm</FilePath>
@@ -859,16 +849,6 @@
               <FileName>Trigo.asm</FileName>
               <FileType>2</FileType>
               <FilePath>.\Trigo.asm</FilePath>
-            </File>
-            <File>
-              <FileName>signal.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\signal.asm</FilePath>
-            </File>
-            <File>
-              <FileName>signal2.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\signal2.asm</FilePath>
             </File>
             <File>
               <FileName>f1p-45.asm</FileName>

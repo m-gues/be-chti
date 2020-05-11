@@ -3,15 +3,13 @@
 
 int tab[64];
 int dft(int, short*);	
-int partRe (int, short*, short*);
-extern short TabSig3;
-extern short TabCos;
+extern short TabSig4;
 
 int main(void)
 {
 	int k;
-	for (k=0;k<63;k++){
-		tab[k]=partRe(k, &TabSig3, &TabCos);
+	for (k=0;k<64;k++){
+		tab[k]=dft(k, &TabSig4);
 	}
 	
 while (1) {
