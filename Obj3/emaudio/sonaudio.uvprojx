@@ -392,6 +392,11 @@
               <FileType>1</FileType>
               <FilePath>.\Src\principal.c</FilePath>
             </File>
+            <File>
+              <FileName>audio.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\audio.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -401,16 +406,6 @@
               <FileName>gassp72.lib</FileName>
               <FileType>4</FileType>
               <FilePath>.\lib\gassp72.lib</FilePath>
-            </File>
-            <File>
-              <FileName>gassp72.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>.\lib\gassp72.lib</FilePath>
-            </File>
-            <File>
-              <FileName>etat.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\lib\etat.inc</FilePath>
             </File>
             <File>
               <FileName>etat.inc</FileName>
