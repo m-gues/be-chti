@@ -11,12 +11,7 @@
 dft		proc
 	
 	;sauvegarde du contenu des registres r4 à r6 et lr
-	push{r4}
-	push{r5}
-	push{r6}
-	push{r7}
-	push{r8}
-	push{lr}
+	push{r4-r8, lr}
 	
 	
 	;les arguments : r0 contient k, r1 contient la table du signal.
@@ -32,15 +27,10 @@ dft		proc
 	 
 	
 	; On récupere le résultat
-	mov		 r0, r8 ;r6 contient les 32 bits de poids fort comme on est en little endian, on les place dans r0
+	mov		 r0, r8 ;r6 contien"t les 32 bits de poids fort comme on est en little endian, on les place dans r0
 	
 	;restitution du contenu des registres r4 à r6 et lr
-	pop{lr}
-	pop{r8}
-	pop{r7}
-	pop{r6}
-	pop{r5}
-	pop{r4}
+	pop{r4-r8, lr}
 	
 	
 	

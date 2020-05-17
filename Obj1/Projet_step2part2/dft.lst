@@ -17,68 +17,58 @@ ARM Macro Assembler    Page 1
    11 00000000         dft     proc
    12 00000000         
    13 00000000         ;sauvegarde du contenu des registres r4 à r6 et lr
-   14 00000000 B410            push{r4}
-   15 00000002 B420            push{r5}
-   16 00000004 B440            push{r6}
-   17 00000006 B480            push{r7}
-   18 00000008 F84D 8D04       push{r8}
-   19 0000000C B500            push{lr}
-   20 0000000E         
-   21 0000000E         
-   22 0000000E         ;les arguments : r0 contient k, r1 contient la table du 
+   14 00000000 E92D 41F0       push{r4-r8,      lr}
+   15 00000004         
+   16 00000004         
+   17 00000004         ;les arguments : r0 contient k, r1 contient la table du 
                        signal.
-   23 0000000E 4A0B            ldr              r2, =TabCos ;r2 contient l'@ de
+   18 00000004 4A07            ldr              r2, =TabCos ;r2 contient l'@ de
                                                              TabCos
-   24 00000010 F7FF FFFE       bl               partRe      ;r0 contient Re(k)
-   25 00000014 FB80 7800       smull            r7, r8, r0, r0 ;r7 et r8 contie
+   19 00000006 F7FF FFFE       bl               partRe      ;r0 contient Re(k)
+   20 0000000A FB80 7800       smull            r7, r8, r0, r0 ;r7 et r8 contie
                                                             nt Re(k) au carré (
                                                             little-endian)
-   26 00000018         
-   27 00000018 4620            mov              r0, r4      ;on remet k dans r0
+   21 0000000E         
+   22 0000000E 4620            mov              r0, r4      ;on remet k dans r0
                                                             
-   28 0000001A 4A09            ldr              r2, =TabSin ;r2 contient l'@ de
+   23 00000010 4A05            ldr              r2, =TabSin ;r2 contient l'@ de
                                                              TabSin
-   29 0000001C F7FF FFFE       bl               partRe      ;r0 contient Im(k)
-   30 00000020         
-   31 00000020 FBC0 7800       smlal            r7, r8, r0, r0 ;r7 et r8 contie
+   24 00000012 F7FF FFFE       bl               partRe      ;r0 contient Im(k)
+   25 00000016         
+   26 00000016 FBC0 7800       smlal            r7, r8, r0, r0 ;r7 et r8 contie
                                                             nnent M2(k)
-   32 00000024         
-   33 00000024         
-   34 00000024         ; On récupere le résultat
-   35 00000024 4640            mov              r0, r8      ;r6 contient les 32
-                                                             bits de poids fort
-                                                             comme on est en li
-                                                            ttle endian, on les
-                                                             place dans r0
-   36 00000026         
-   37 00000026         ;restitution du contenu des registres r4 à r6 et lr
-   38 00000026 F85D EB04       pop{lr}
-   39 0000002A F85D 8B04       pop{r8}
-   40 0000002E BC80            pop{r7}
-   41 00000030 BC40            pop{r6}
-   42 00000032 BC20            pop{r5}
-   43 00000034 BC10            pop{r4}
-   44 00000036         
-   45 00000036         
-   46 00000036         
-   47 00000036 E7FF            b                fin
-   48 00000038         fin
-
-
-
-ARM Macro Assembler    Page 2 
-
-
-   49 00000038 4770            bx               lr
-   50 0000003A                 endp
-   51 0000003A                 end
-              00 00 00000000 
+   27 0000001A         
+   28 0000001A         
+   29 0000001A         ; On récupere le résultat
+   30 0000001A 4640            mov              r0, r8      ;r6 contien"t les 3
+                                                            2 bits de poids for
+                                                            t comme on est en l
+                                                            ittle endian, on le
+                                                            s place dans r0
+   31 0000001C         
+   32 0000001C         ;restitution du contenu des registres r4 à r6 et lr
+   33 0000001C E8BD 41F0       pop{r4-r8,       lr}
+   34 00000020         
+   35 00000020         
+   36 00000020         
+   37 00000020 E7FF            b                fin
+   38 00000022         fin
+   39 00000022 4770            bx               lr
+   40 00000024                 endp
+   41 00000024                 end
+              00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\obj\dft.d -o.\obj\dft.o -I.\RTE\_Simu -IC:\Users\Marianne\AppDat
 a\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Marianne\AppDat
 a\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__EVAL S
 ETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529"
+
+
+
+ARM Macro Assembler    Page 2 
+
+
  --predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=dft.lst df
 t.s
 
@@ -95,13 +85,13 @@ Symbol: dft
    Uses
       At line 9 in file dft.s
 Comment: dft used once
-fin 00000038
+fin 00000022
 
 Symbol: fin
    Definitions
-      At line 48 in file dft.s
+      At line 38 in file dft.s
    Uses
-      At line 47 in file dft.s
+      At line 37 in file dft.s
 Comment: fin used once
 moncode 00000000
 
@@ -124,7 +114,7 @@ Symbol: TabCos
    Definitions
       At line 5 in file dft.s
    Uses
-      At line 23 in file dft.s
+      At line 18 in file dft.s
 Comment: TabCos used once
 TabSin 00000000
 
@@ -132,7 +122,7 @@ Symbol: TabSin
    Definitions
       At line 4 in file dft.s
    Uses
-      At line 28 in file dft.s
+      At line 23 in file dft.s
 Comment: TabSin used once
 partIm 00000000
 
@@ -148,8 +138,8 @@ Symbol: partRe
    Definitions
       At line 6 in file dft.s
    Uses
+      At line 19 in file dft.s
       At line 24 in file dft.s
-      At line 29 in file dft.s
 
 4 symbols
 344 symbols in table
