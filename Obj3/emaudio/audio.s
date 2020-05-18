@@ -13,7 +13,7 @@ TIM3_CCR3	equ	0x4000043C	; adresse registre PWM
 	
 timer_callback proc
 	
-	push 	{r4}
+	push 	{r4-r6}
 	ldr 	r0, =etat 		; ro=@etat
 	ldr 	r1,[r0, #E_POS]	; r1=position
 	ldr		r2,[r0, #E_TAL] ; r2=taille
@@ -29,16 +29,27 @@ timer_callback proc
 	; Mise à l'échelle à faire
 	;multiplier par un facteur échelle
 	;division par 2^16
+	ldr 	r5,[r0, #E_RES]
+	mul		r4, r5 ; multiplie par la résolution 
+	udiv	r4,	#0xFFFF ; division par 2^16
+	
 	
 	;sortie ech vers pwm
-	
+	ldr 	r5,=TIM3_CCR3 ; on place l'@ de la sortie PWM 
+	str 	r4,[r5]
 	;position ++
 	add 	r1,#0x1
 	str 	r1,[r0, #E_POS]
 	
 fin 
-
-	pop 	{r4}
+	mov 	r6,#0x0000		;
+	str		r6,[r0, #E_POS]	;On mets la position à zéro 
+	
+		;sortie ech vers pwm
+	ldr 	r5,=TIM3_CCR3 ; on place l'@ de la sortie PWM 
+	str 	r4,[r5]
+	
+	pop 	{r4,r5}
 	bx 		 lr
 	endp 
 	end
