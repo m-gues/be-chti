@@ -5,3 +5,5 @@ Objectif 1 : dft en simulation, dossier Obj1, qui contient
 	- activité 1 : dossier signal-carre (fini)
 	- activité 2, partie 1 (sin2+cos2) : dossier Projet_step2part1 (fini)
 	- activité 2, partie 2 (dft) : dossier Projet_step2part2 (fini)
+
+Objectif 2 : dft en réel et gestion du score, dossier Obj2 (en cours, fonction sys_callback v1 terminée, reste à calculer M2TIR + gérer l'allumage de la LED + tests) 
