@@ -1,5 +1,5 @@
 #include "gassp72.h"
-#define M2TIR 100 //Calcul M2TIR à faire
+#define M2TIR 0 //Calcul M2TIR à faire
 
 //NOTE : pour des raisons de types d'arguments j'ai passé l'adresse du premier element de dma_buf au lieu de l'adresse
 // de dma_buf lui-même, je pense que ça revient au même ? Si jamais ça marche pas c'est probablement la cause
@@ -60,7 +60,7 @@ int main(void)
 	GPIO_Configure(GPIOB, 14, OUTPUT, OUTPUT_PPULL);
 
 	// activation ADC, sampling time 1us
-	Init_TimingADC_ActiveADC_ff( ADC1, 72 );
+	Init_TimingADC_ActiveADC_ff( ADC1, 0x33); //Changer la valeur test ici
 	Single_Channel_ADC( ADC1, 2 );
 	// Déclenchement ADC par timer2, periode (72MHz/320kHz)ticks
 	Init_Conversion_On_Trig_Timer_ff( ADC1, TIM2_CC2, 225 );
@@ -76,9 +76,34 @@ int main(void)
 	SysTick_Enable_IT;
 		
 	
+	int cible_touchee =0;	
+	int score[6]={0,0,0,0,0,0};//Scores associés aux différents pistolets
+	int ajout_score[6]={0,0,0,0,0,0}; //Ajouts à faire aux scores définitifs
+	
 	
 while	(1)
 	{
-		//Allumage des LED
+		//Gestion de la LED et du score
+		for (int i=0; i<6; i++){
+				if (compt_occurences[i]>2) {
+					cible_touchee=1;
+					ajout_score[i]=1;
+					GPIO_Set(GPIOB, 14);
+				}
+			}
+		while (cible_touchee>0){
+			cible_touchee=0;
+			for (int i=0; i<6; i++){
+				if (compt_occurences[i]>2){
+					cible_touchee=1;
+					ajout_score[i]=1;
+				}
+			}
+		}
+		GPIO_Clear(GPIOB, 14);
+		for (int i=0; i<6; i++){
+			score[i]+=ajout_score[i];
+			ajout_score[i]=0;
+		}
 	}
 }
