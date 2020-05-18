@@ -5,41 +5,54 @@ ARM Macro Assembler    Page 1
 
 
     1 00000000                 thumb
-    2 00000000                 area             moncode, code, readonly
-    3 00000000                 export           timer_callback
-    4 00000000         
-    5 00000000 40010C10 
+    2 00000000         
+    3 00000000                 area             madata, data, readwrite
+    4 00000000                 export           switch_val
+    5 00000000         
+    6 00000000 00000000 
+                       switch_val
+                               dcd              0
+    7 00000004         
+    8 00000004         
+    9 00000004                 area             moncode, code, readonly
+   10 00000000                 export           timer_callback
+   11 00000000         
+   12 00000000 40010C10 
                        GPIOB_BSRR
                                equ              0x40010C10  ; Bit Set/Reset reg
                                                             ister
-    6 00000000         
-    7 00000000         ;fonction principale
-    8 00000000         timer_callback
+   13 00000000         
+   14 00000000         ;fonction principale
+   15 00000000         timer_callback
                                proc
-    9 00000000 4661            mov              r1, r12
-   10 00000002 B101            cbz              r1, mise_a_1
-   11 00000004 B931            cbnz             r1, mise_a_0
-   12 00000006         
-   13 00000006         ; mise a 1 de PB1
-   14 00000006         mise_a_1
-   15 00000006 4B07            ldr              r3, =GPIOB_BSRR
-   16 00000008 F04F 0102       mov              r1, #0x00000002
-   17 0000000C 6019            str              r1, [r3]
-   18 0000000E F04F 0C01       mov              r12, #1
-   19 00000012 E006            b                fin
-   20 00000014         ;
-   21 00000014         mise_a_0
-   22 00000014         ; mise a zero de PB1
-   23 00000014 4B03            ldr              r3, =GPIOB_BSRR
-   24 00000016 F44F 3100       mov              r1, #0x00020000
-   25 0000001A 6019            str              r1, [r3]
-   26 0000001C F04F 0C00       mov              r12, #0
-   27 00000020 E7FF            b                fin
-   28 00000022         ;
-   29 00000022         fin
-   30 00000022 4770            bx               lr
-   31 00000024                 endp
-   32 00000024                 end
+   16 00000000 4A0A            ldr              r2, =switch_val
+   17 00000002 6811            ldr              r1, [r2]
+   18 00000004 B101            cbz              r1, mise_a_1
+   19 00000006 B939            cbnz             r1, mise_a_0
+   20 00000008         
+   21 00000008         ; mise a 1 de PB1
+   22 00000008         mise_a_1
+   23 00000008 4B09            ldr              r3, =GPIOB_BSRR
+   24 0000000A F04F 0102       mov              r1, #0x00000002
+   25 0000000E 6019            str              r1, [r3]
+   26 00000010 F04F 0101       mov              r1, #1
+   27 00000014 6011            str              r1, [r2]
+   28 00000016 E007            b                fin
+   29 00000018         ;
+   30 00000018         mise_a_0
+   31 00000018         ; mise a zero de PB1
+   32 00000018 4B05            ldr              r3, =GPIOB_BSRR
+   33 0000001A F44F 3100       mov              r1, #0x00020000
+   34 0000001E 6019            str              r1, [r3]
+   35 00000020 F04F 0100       mov              r1, #0
+   36 00000024 6011            str              r1, [r2]
+   37 00000026 E7FF            b                fin
+   38 00000028         ;
+   39 00000028         fin
+   40 00000028 4770            bx               lr
+   41 0000002A                 endp
+   42 0000002A                 end
+              00 00 00000000 
               40010C10 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\obj\signal.d -o.\obj\signal.o -I.\RTE\_Simu -IC:\Users\Marianne\
@@ -54,36 +67,60 @@ al.lst signal.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-fin 00000022
+madata 00000000
+
+Symbol: madata
+   Definitions
+      At line 3 in file signal.s
+   Uses
+      None
+Comment: madata unused
+switch_val 00000000
+
+Symbol: switch_val
+   Definitions
+      At line 6 in file signal.s
+   Uses
+      At line 4 in file signal.s
+      At line 16 in file signal.s
+
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+fin 00000028
 
 Symbol: fin
    Definitions
-      At line 29 in file signal.s
+      At line 39 in file signal.s
    Uses
-      At line 19 in file signal.s
-      At line 27 in file signal.s
+      At line 28 in file signal.s
+      At line 37 in file signal.s
 
-mise_a_0 00000014
+mise_a_0 00000018
 
 Symbol: mise_a_0
    Definitions
-      At line 21 in file signal.s
+      At line 30 in file signal.s
    Uses
-      At line 11 in file signal.s
+      At line 19 in file signal.s
 Comment: mise_a_0 used once
-mise_a_1 00000006
+mise_a_1 00000008
 
 Symbol: mise_a_1
    Definitions
-      At line 14 in file signal.s
+      At line 22 in file signal.s
    Uses
-      At line 10 in file signal.s
+      At line 18 in file signal.s
 Comment: mise_a_1 used once
 moncode 00000000
 
 Symbol: moncode
    Definitions
-      At line 2 in file signal.s
+      At line 9 in file signal.s
    Uses
       None
 Comment: moncode unused
@@ -91,9 +128,9 @@ timer_callback 00000000
 
 Symbol: timer_callback
    Definitions
-      At line 8 in file signal.s
+      At line 15 in file signal.s
    Uses
-      At line 3 in file signal.s
+      At line 10 in file signal.s
 Comment: timer_callback used once
 5 symbols
 
@@ -106,10 +143,10 @@ GPIOB_BSRR 40010C10
 
 Symbol: GPIOB_BSRR
    Definitions
-      At line 5 in file signal.s
+      At line 12 in file signal.s
    Uses
-      At line 15 in file signal.s
       At line 23 in file signal.s
+      At line 32 in file signal.s
 
 1 symbol
-343 symbols in table
+345 symbols in table
