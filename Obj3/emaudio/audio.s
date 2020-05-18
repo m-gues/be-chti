@@ -1,6 +1,7 @@
 	thumb
 		
 	area moncode, code, readonly
+		
 	export timer_callback
 		
 GPIOB_BSRR	equ	0x40010C10	; Bit Set/Reset register
@@ -21,9 +22,10 @@ timer_callback proc
 	ldr 	r1,[r0, #E_POS]	; r1=position
 	ldr		r2,[r0, #E_TAI] ; r2=taille
 	cmp 	r1,r2
-	bmi 	fin ;if position >taille on vas a la partie fin
+	bpl		boucle ;if position >= taille on entre dans la boucle
+	b 		fin		; sinon on vas dans fin 
 	;début de boucle
-	
+boucle	
 	ldr 	r3,[r0, #E_SON] ;r3= @Son
 	ldrsh 	r4,[r3,r1,lsl #0x01]    ;r4=échantillon 
 	
