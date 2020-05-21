@@ -1,5 +1,5 @@
 #include "gassp72.h"
-#define M2TIR 0 //Calcul M2TIR à faire
+#define M2TIR 985661
 
 //NOTE : pour des raisons de types d'arguments j'ai passé l'adresse du premier element de dma_buf au lieu de l'adresse
 // de dma_buf lui-même, je pense que ça revient au même ? Si jamais ça marche pas c'est probablement la cause
@@ -27,22 +27,34 @@ void sys_callback(void)
 	}
 	
 	//Maj du tableau d'occurences
-	if (tab[17]>M2TIR) compt_occurences[0]++;
+	if (tab[17]>M2TIR) {
+		compt_occurences[0]++;
+	}
 	else compt_occurences[0]=0;
 	
-	if (tab[18]>M2TIR) compt_occurences[1]++;
+	if (tab[18]>M2TIR) {
+		compt_occurences[1]++;
+	}
 	else compt_occurences[1]=0;
 	
-	if (tab[19]>M2TIR) compt_occurences[2]++;
+	if (tab[19]>M2TIR) {
+		compt_occurences[2]++;
+	}
 	else compt_occurences[2]=0;
 	
-	if (tab[20]>M2TIR) compt_occurences[3]++;
+	if (tab[20]>M2TIR) {
+		compt_occurences[3]++;
+	}
 	else compt_occurences[3]=0;
 	
-	if (tab[23]>M2TIR) compt_occurences[4]++;
+	if (tab[23]>M2TIR) {
+		compt_occurences[4]++;
+	}
 	else compt_occurences[4]=0;
 	
-	if (tab[24]>M2TIR) compt_occurences[5]++;
+	if (tab[24]>M2TIR) {
+		compt_occurences[5]++;
+	}
 	else compt_occurences[5]=0;
 }
 
@@ -60,7 +72,7 @@ int main(void)
 	GPIO_Configure(GPIOB, 14, OUTPUT, OUTPUT_PPULL);
 
 	// activation ADC, sampling time 1us
-	Init_TimingADC_ActiveADC_ff( ADC1, 0x33); //Changer la valeur test ici
+	Init_TimingADC_ActiveADC_ff( ADC1, 0x31); //Changer la valeur test ici
 	Single_Channel_ADC( ADC1, 2 );
 	// Déclenchement ADC par timer2, periode (72MHz/320kHz)ticks
 	Init_Conversion_On_Trig_Timer_ff( ADC1, TIM2_CC2, 225 );
@@ -81,7 +93,7 @@ int main(void)
 	int ajout_score[6]={0,0,0,0,0,0}; //Ajouts à faire aux scores définitifs
 	
 	
-while	(1)
+while(1)
 	{
 		//Gestion de la LED et du score
 		for (int i=0; i<6; i++){
