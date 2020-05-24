@@ -1,6 +1,8 @@
 # be-chti
 Djihadi AHAMDY / Marianne GUES
 
+Note : le commit concernant une méthode initTabLabel() est une erreur de manipulation, merci de ne pas en tenir compte
+
 Objectif 1 : dft en simulation, dossier Obj1, qui contient
 	- activité 1 : dossier signal-carre (fini)
 	- activité 2, partie 1 (sin2+cos2) : dossier Projet_step2part1 (fini)
