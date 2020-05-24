@@ -1,8 +1,7 @@
 #include "gassp72.h"
 #define M2TIR 985661
 
-//NOTE : pour des raisons de types d'arguments j'ai passé l'adresse du premier element de dma_buf au lieu de l'adresse
-// de dma_buf lui-même, je pense que ça revient au même ? Si jamais ça marche pas c'est probablement la cause
+//Demander pour la vérification de la LED
 
 //fonctions externes
 extern int dft(int, vu16*);
@@ -72,7 +71,7 @@ int main(void)
 	GPIO_Configure(GPIOB, 14, OUTPUT, OUTPUT_PPULL);
 
 	// activation ADC, sampling time 1us
-	Init_TimingADC_ActiveADC_ff( ADC1, 0x31); //Changer la valeur test ici
+	Init_TimingADC_ActiveADC_ff( ADC1, 0x31/*Changer la valeur test ici*/); 
 	Single_Channel_ADC( ADC1, 2 );
 	// Déclenchement ADC par timer2, periode (72MHz/320kHz)ticks
 	Init_Conversion_On_Trig_Timer_ff( ADC1, TIM2_CC2, 225 );
