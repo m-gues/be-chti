@@ -179,8 +179,8 @@ Image Symbol Table
     i.__scatterload_null                     0x08001e2e   Section        2  handlers.o(i.__scatterload_null)
     i.__scatterload_zeroinit                 0x08001e30   Section       14  handlers.o(i.__scatterload_zeroinit)
     i.main                                   0x08001e40   Section        0  principal.o(i.main)
-    moncode                                  0x08001ed0   Section       72  audio.o(moncode)
-    SecSon                                   0x08001f38   Section    11032  bruitverre.o(SecSon)
+    moncode                                  0x08001ed0   Section       64  audio.o(moncode)
+    SecSon                                   0x08001f30   Section    11032  bruitverre.o(SecSon)
     .data                                    0x20000000   Section      160  timer_1234.o(.data)
     Ptr_TIM1                                 0x20000000   Data           4  timer_1234.o(.data)
     Ptr_TIM2                                 0x20000004   Data           4  timer_1234.o(.data)
@@ -217,7 +217,7 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    BuildAttributes$$THM_ISAv4$P$D$K$B$S$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OTIME$ROPI$EBA8$MICROLIB$REQ8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    BuildAttributes$$THM_ISAv4$P$D$K$B$S$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OTIME$ROPI$EBA8$MICROLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
     __ARM_use_no_argv                        0x00000000   Number         0  principal.o ABSOLUTE
     __cpp_initialize__aeabi_                  - Undefined Weak Reference
     __cxa_finalize                            - Undefined Weak Reference
@@ -341,12 +341,12 @@ Image Symbol Table
     __scatterload_null                       0x08001e2f   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x08001e31   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
     main                                     0x08001e41   Thumb Code   112  principal.o(i.main)
-    timer_callback                           0x08001ed1   Thumb Code    62  audio.o(moncode)
-    Region$$Table$$Base                      0x08001f18   Number         0  anon$$obj.o(Region$$Table)
-    LongueurSon                              0x08001f38   Data           4  bruitverre.o(SecSon)
-    Region$$Table$$Limit                     0x08001f38   Number         0  anon$$obj.o(Region$$Table)
-    PeriodeSonMicroSec                       0x08001f3c   Data           4  bruitverre.o(SecSon)
-    Son                                      0x08001f40   Data           0  bruitverre.o(SecSon)
+    timer_callback                           0x08001ed1   Thumb Code    56  audio.o(moncode)
+    Region$$Table$$Base                      0x08001f10   Number         0  anon$$obj.o(Region$$Table)
+    LongueurSon                              0x08001f30   Data           4  bruitverre.o(SecSon)
+    Region$$Table$$Limit                     0x08001f30   Number         0  anon$$obj.o(Region$$Table)
+    PeriodeSonMicroSec                       0x08001f34   Data           4  bruitverre.o(SecSon)
+    Son                                      0x08001f38   Data           0  bruitverre.o(SecSon)
     Enable_Fct_IT_Compare_Match_TIM1_Voie1   0x20000010   Data           1  timer_1234.o(.data)
     Enable_Fct_IT_Compare_Match_TIM1_Voie2   0x20000011   Data           1  timer_1234.o(.data)
     Enable_Fct_IT_Compare_Match_TIM1_Voie3   0x20000012   Data           1  timer_1234.o(.data)
@@ -374,9 +374,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00004af0, Max: 0x00020000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00004ae8, Max: 0x00020000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00004a50, Max: 0x00020000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00004a48, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -422,18 +422,18 @@ Memory Map of the image
     0x08001e30   0x08001e30   0x0000000e   Code   RO          144    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x08001e3e   0x08001e3e   0x00000002   PAD
     0x08001e40   0x08001e40   0x00000090   Code   RO           13    i.main              principal.o
-    0x08001ed0   0x08001ed0   0x00000048   Code   RO           70    moncode             audio.o
-    0x08001f18   0x08001f18   0x00000020   Data   RO          140    Region$$Table       anon$$obj.o
-    0x08001f38   0x08001f38   0x00002b18   Data   RO           74    SecSon              bruitverre.o
+    0x08001ed0   0x08001ed0   0x00000040   Code   RO           70    moncode             audio.o
+    0x08001f10   0x08001f10   0x00000020   Data   RO          140    Region$$Table       anon$$obj.o
+    0x08001f30   0x08001f30   0x00002b18   Data   RO           74    SecSon              bruitverre.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08004a50, Size: 0x000004b8, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08004a48, Size: 0x000004b8, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08004a50   0x000000a0   Data   RW           80    .data               gassp72.lib(timer_1234.o)
+    0x20000000   0x08004a48   0x000000a0   Data   RW           80    .data               gassp72.lib(timer_1234.o)
     0x200000a0        -       0x00000014   Zero   RW           14    .bss                principal.o
-    0x200000b4   0x08004af0   0x00000004   PAD
+    0x200000b4   0x08004ae8   0x00000004   PAD
     0x200000b8        -       0x00000400   Zero   RW            1    STACK               startup-rvds.o
 
 
@@ -444,13 +444,13 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-        72         10          0          0          0        316   audio.o
+        64          8          0          0          0        312   audio.o
          0          0      11032          0          0          0   bruitverre.o
        144         32          0          0         20       2382   principal.o
         76         20        236          0       1024        824   startup-rvds.o
 
     ----------------------------------------------------------------------
-       292         62      11300          0       1048       3522   Object Totals
+       284         60      11300          0       1048       3518   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          0          0          0          0          4          0   (incl. Padding)
 
@@ -514,15 +514,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      7724        628      11300        160       1048       5138   Grand Totals
-      7724        628      11300        160       1048       5138   ELF Image Totals
-      7724        628      11300        160          0          0   ROM Totals
+      7716        626      11300        160       1048       5134   Grand Totals
+      7716        626      11300        160       1048       5134   ELF Image Totals
+      7716        626      11300        160          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                19024 (  18.58kB)
+    Total RO  Size (Code + RO Data)                19016 (  18.57kB)
     Total RW  Size (RW Data + ZI Data)              1208 (   1.18kB)
-    Total ROM Size (Code + RO Data + RW Data)      19184 (  18.73kB)
+    Total ROM Size (Code + RO Data + RW Data)      19176 (  18.73kB)
 
 ==============================================================================
 
