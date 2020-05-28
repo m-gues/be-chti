@@ -51,7 +51,7 @@ ARM Macro Assembler    Page 1
    18 00000000         timer_callback
                                proc
    19 00000000         
-   20 00000000 B450            push             {r4,r6}
+   20 00000000 B430            push             {r4,r5}
    21 00000002 480D            ldr              r0, =etat   ; ro=@etat
    22 00000004 6801            ldr              r1,[r0, #E_POS] ; r1=position
    23 00000006 6842            ldr              r2,[r0, #E_TAI] ; r2=taille

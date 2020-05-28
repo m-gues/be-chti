@@ -17,7 +17,7 @@ TIM3_CCR3	equ	0x4000043C	; adresse registre PWM
 	
 timer_callback proc
 	
-	push 	{r4,r6}
+	push 	{r4,r5}
 	ldr 	r0, =etat 		; ro=@etat
 	ldr 	r1,[r0, #E_POS]	; r1=position
 	ldr		r2,[r0, #E_TAI] ; r2=taille
