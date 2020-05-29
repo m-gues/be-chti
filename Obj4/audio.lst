@@ -1,0 +1,254 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 thumb
+    2 00000000         
+    3 00000000                 area             moncode, code, readonly
+    4 00000000         
+    5 00000000                 export           timer_callback
+    6 00000000         
+    7 00000000 40010C10 
+                       GPIOB_BSRR
+                               equ              0x40010C10  ; Bit Set/Reset reg
+                                                            ister
+    8 00000000 4000043C 
+                       TIM3_CCR3
+                               equ              0x4000043C  ; adresse registre 
+                                                            PWM
+    9 00000000         
+   10 00000000                 export           timer_callback
+   11 00000000                 include          etat.inc
+    1 00000000         
+    2 00000000         ;typedef struct {
+    3 00000000         ;int position;  // 0
+    4 00000000         ;int taille;  // 4
+    5 00000000         ;void * son;  // 8
+    6 00000000         ;int resolution; // 12
+    7 00000000         ;int periode_ticks; // 16
+    8 00000000         ;} type_etat;
+    9 00000000         
+   10 00000000         ;/*
+   11 00000000 00000000 
+                       E_POS   equ              0
+   12 00000000 00000004 
+                       E_TAI   equ              4
+   13 00000000 00000008 
+                       E_SON   equ              8
+   14 00000000 0000000C 
+                       E_RES   equ              12
+   15 00000000 00000010 
+                       E_PER   equ              16
+   16 00000000                 end
+   12 00000000                 import           etat
+   13 00000000                 import           LongueurSon
+   14 00000000                 import           PeriodeSonMicroSec
+   15 00000000                 import           Son
+   16 00000000         
+   17 00000000         
+   18 00000000         timer_callback
+                               proc
+   19 00000000         
+   20 00000000 B430            push             {r4,r5}
+   21 00000002 480D            ldr              r0, =etat   ; ro=@etat
+   22 00000004 6801            ldr              r1,[r0, #E_POS] ; r1=position
+   23 00000006 6842            ldr              r2,[r0, #E_TAI] ; r2=taille
+   24 00000008 4291            cmp              r1,r2
+   25 0000000A D100            bne              boucle      ;if position != tai
+                                                            lle on entre dans l
+                                                            a boucle
+   26 0000000C E012            b                fin         ; sinon on vas dans
+                                                             fin 
+   27 0000000E         ;début de boucle
+   28 0000000E         boucle
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   29 0000000E 6883            ldr              r3,[r0, #E_SON] ;r3= @Son
+   30 00000010 F933 4011       ldrsh            r4,[r3,r1,lsl #0x01] 
+                                                            ;r4=échantillon 
+   31 00000014         
+   32 00000014 F504 4400       add              r4,#0x8000  ; ajout de la compo
+                                                            sante continue
+   33 00000018         
+   34 00000018         ; Mise à l'échelle à faire
+   35 00000018         ;multiplier par un facteur échelle
+   36 00000018         ;division par 2^16
+   37 00000018 68C5            ldr              r5,[r0, #E_RES]
+   38 0000001A FB04 F405       mul              r4, r5      ; multiplie par la 
+                                                            résolution 
+   39 0000001E F64F 7CFF       mov              r12, #0xFFFF
+   40 00000022 FBB4 F4FC       udiv             r4, r12     ; division par 2^16
+                                                            
+   41 00000026         
+   42 00000026         
+   43 00000026         ;sortie ech vers pwm
+   44 00000026 F8DF C014       ldr              r12,=TIM3_CCR3 ; on place l'@ d
+                                                            e la sortie PWM 
+   45 0000002A F8CC 4000       str              r4,[r12]
+   46 0000002E         ;position ++
+   47 0000002E F101 0101       add              r1,#0x1
+   48 00000032 6001            str              r1,[r0, #E_POS]
+   49 00000034         fin
+   50 00000034 BC30            pop              {r4,r5}
+   51 00000036 4770            bx               lr
+   52 00000038                 endp
+   53 00000038                 end
+              00000000 
+              4000043C 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\obj\audio.d -o.\obj\audio.o -I.\RTE\_Simu -IC:\Users\jia-g\AppDa
+ta\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\jia-g\AppData\
+Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__EVAL SET
+A 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 529" -
+-predefine="_RTE_ SETA 1" --predefine="STM32F10X_MD SETA 1" --list=audio.lst au
+dio.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+boucle 0000000E
+
+Symbol: boucle
+   Definitions
+      At line 28 in file audio.s
+   Uses
+      At line 25 in file audio.s
+Comment: boucle used once
+fin 00000034
+
+Symbol: fin
+   Definitions
+      At line 49 in file audio.s
+   Uses
+      At line 26 in file audio.s
+Comment: fin used once
+moncode 00000000
+
+Symbol: moncode
+   Definitions
+      At line 3 in file audio.s
+   Uses
+      None
+Comment: moncode unused
+timer_callback 00000000
+
+Symbol: timer_callback
+   Definitions
+      At line 18 in file audio.s
+   Uses
+      At line 5 in file audio.s
+      At line 10 in file audio.s
+
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+E_PER 00000010
+
+Symbol: E_PER
+   Definitions
+      At line 15 in file etat.inc
+   Uses
+      None
+Comment: E_PER unused
+E_POS 00000000
+
+Symbol: E_POS
+   Definitions
+      At line 11 in file etat.inc
+   Uses
+      At line 22 in file audio.s
+      At line 48 in file audio.s
+
+E_RES 0000000C
+
+Symbol: E_RES
+   Definitions
+      At line 14 in file etat.inc
+   Uses
+      At line 37 in file audio.s
+Comment: E_RES used once
+E_SON 00000008
+
+Symbol: E_SON
+   Definitions
+      At line 13 in file etat.inc
+   Uses
+      At line 29 in file audio.s
+Comment: E_SON used once
+E_TAI 00000004
+
+Symbol: E_TAI
+   Definitions
+      At line 12 in file etat.inc
+   Uses
+      At line 23 in file audio.s
+Comment: E_TAI used once
+GPIOB_BSRR 40010C10
+
+Symbol: GPIOB_BSRR
+   Definitions
+      At line 7 in file audio.s
+   Uses
+      None
+Comment: GPIOB_BSRR unused
+TIM3_CCR3 4000043C
+
+Symbol: TIM3_CCR3
+   Definitions
+      At line 8 in file audio.s
+   Uses
+      At line 44 in file audio.s
+Comment: TIM3_CCR3 used once
+7 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+LongueurSon 00000000
+
+Symbol: LongueurSon
+   Definitions
+      At line 13 in file audio.s
+   Uses
+      None
+Comment: LongueurSon unused
+PeriodeSonMicroSec 00000000
+
+Symbol: PeriodeSonMicroSec
+   Definitions
+      At line 14 in file audio.s
+   Uses
+      None
+Comment: PeriodeSonMicroSec unused
+Son 00000000
+
+Symbol: Son
+   Definitions
+      At line 15 in file audio.s
+   Uses
+      None
+Comment: Son unused
+etat 00000000
+
+Symbol: etat
+   Definitions
+      At line 12 in file audio.s
+   Uses
+      At line 21 in file audio.s
+Comment: etat used once
+4 symbols
+352 symbols in table

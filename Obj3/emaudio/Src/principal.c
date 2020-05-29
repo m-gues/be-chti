@@ -19,7 +19,7 @@ etat.taille=LongueurSon;
 etat.son=&Son;
 etat.Tech_en_Tck = PeriodeSonMicroSec;
 etat.position=91;
-etat.taille=45;
+
 	
 	// activation de la PLL qui multiplie la fréquence du quartz par 9
 CLOCK_Configure();
