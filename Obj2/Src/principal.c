@@ -1,6 +1,8 @@
 #include "gassp72.h"
 #define M2TIR 985661
 
+//NB : Ce programme a été conçu en incluant l'allumage des LED. Les lignes y correspondant ont été commentées.
+
 //fonctions externes
 extern int dft(int, vu16*);
 
