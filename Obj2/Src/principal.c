@@ -1,8 +1,6 @@
 #include "gassp72.h"
 #define M2TIR 985661
 
-//Demander pour la vérification de la LED
-
 //fonctions externes
 extern int dft(int, vu16*);
 
@@ -71,7 +69,7 @@ int main(void)
 	GPIO_Configure(GPIOB, 14, OUTPUT, OUTPUT_PPULL);
 
 	// activation ADC, sampling time 1us
-	Init_TimingADC_ActiveADC_ff( ADC1, 0x31/*Changer la valeur test ici*/); 
+	Init_TimingADC_ActiveADC_ff( ADC1, 0x33/*Changer la valeur test ici*/); 
 	Single_Channel_ADC( ADC1, 2 );
 	// Déclenchement ADC par timer2, periode (72MHz/320kHz)ticks
 	Init_Conversion_On_Trig_Timer_ff( ADC1, TIM2_CC2, 225 );
@@ -88,14 +86,13 @@ int main(void)
 		
 	
 	int cible_touchee =0;	
-	int score[6]={0,0,0,0,0,0};//Scores associés aux différents pistolets
 	int ajout_score[6]={0,0,0,0,0,0}; //Ajouts à faire aux scores définitifs
-	int valeur_led = 0;
+	int score[6]={0,0,0,0,0,0};//Scores associés aux différents pistolets
 	
 	
 while(1)
 	{
-		//Gestion de la LED et du score
+		//Gestion du score
 		for (int i=0; i<6; i++){
 				if (compt_occurences[i]>2) {
 					cible_touchee=1;
