@@ -7,19 +7,20 @@ ARM Macro Assembler    Page 1
     1 00000000                 thumb
     2 00000000         
     3 00000000                 area             moncode, code, readonly
-    4 00000000                 export           timer_callback
-    5 00000000         
-    6 00000000 40010C10 
+    4 00000000         
+    5 00000000                 export           timer_callback
+    6 00000000         
+    7 00000000 40010C10 
                        GPIOB_BSRR
                                equ              0x40010C10  ; Bit Set/Reset reg
                                                             ister
-    7 00000000 4000043C 
+    8 00000000 4000043C 
                        TIM3_CCR3
                                equ              0x4000043C  ; adresse registre 
                                                             PWM
-    8 00000000         
-    9 00000000                 export           timer_callback
-   10 00000000                 include          etat.inc
+    9 00000000         
+   10 00000000                 export           timer_callback
+   11 00000000                 include          etat.inc
     1 00000000         
     2 00000000         ;typedef struct {
     3 00000000         ;int position;  // 0
@@ -41,71 +42,63 @@ ARM Macro Assembler    Page 1
    15 00000000 00000010 
                        E_PER   equ              16
    16 00000000                 end
-   11 00000000                 import           etat
-   12 00000000                 import           LongueurSon
-   13 00000000                 import           PeriodeSonMicroSec
-   14 00000000                 import           Son
-   15 00000000         
+   12 00000000                 import           etat
+   13 00000000                 import           LongueurSon
+   14 00000000                 import           PeriodeSonMicroSec
+   15 00000000                 import           Son
    16 00000000         
-   17 00000000         timer_callback
+   17 00000000         
+   18 00000000         timer_callback
                                proc
-   18 00000000         
-   19 00000000 B470            push             {r4-r6}
-   20 00000002 480E            ldr              r0, =etat   ; ro=@etat
-   21 00000004 6801            ldr              r1,[r0, #E_POS] ; r1=position
-   22 00000006 6842            ldr              r2,[r0, #E_TAI] ; r2=taille
-   23 00000008 4291            cmp              r1,r2
-   24 0000000A D410            bmi              fin         ;if position >taill
-                                                            e on vas a la parti
-                                                            e fin
-   25 0000000C         ;début de boucle
-   26 0000000C         
-   27 0000000C 6883            ldr              r3,[r0, #E_SON] ;r3= @Son
-   28 0000000E F933 4011       ldrsh            r4,[r3,r1,lsl #0x01] 
-                                                            ;r4=échantillon 
+   19 00000000         
+   20 00000000 B430            push             {r4,r5}
+   21 00000002 480D            ldr              r0, =etat   ; ro=@etat
+   22 00000004 6801            ldr              r1,[r0, #E_POS] ; r1=position
+   23 00000006 6842            ldr              r2,[r0, #E_TAI] ; r2=taille
+   24 00000008 4291            cmp              r1,r2
+   25 0000000A D100            bne              boucle      ;if position != tai
+                                                            lle on entre dans l
+                                                            a boucle
+   26 0000000C E012            b                fin         ; sinon on vas dans
+                                                             fin 
+   27 0000000E         ;début de boucle
+   28 0000000E         boucle
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   29 00000012         
-   30 00000012 F504 4400       add              r4,#0x8000  ; ajout de la compo
+   29 0000000E 6883            ldr              r3,[r0, #E_SON] ;r3= @Son
+   30 00000010 F933 4011       ldrsh            r4,[r3,r1,lsl #0x01] 
+                                                            ;r4=échantillon 
+   31 00000014         
+   32 00000014 F504 4400       add              r4,#0x8000  ; ajout de la compo
                                                             sante continue
-   31 00000016         
-   32 00000016         ; Mise à l'échelle à faire
-   33 00000016         ;multiplier par un facteur échelle
-   34 00000016         ;division par 2^16
-   35 00000016 68C5            ldr              r5,[r0, #E_RES]
-   36 00000018 FB04 F405       mul              r4, r5      ; multiplie par la 
+   33 00000018         
+   34 00000018         ; Mise à l'échelle à faire
+   35 00000018         ;multiplier par un facteur échelle
+   36 00000018         ;division par 2^16
+   37 00000018 68C5            ldr              r5,[r0, #E_RES]
+   38 0000001A FB04 F405       mul              r4, r5      ; multiplie par la 
                                                             résolution 
-   37 0000001C F64F 75FF       mov              r5, #0xFFFF
-   38 00000020 FBB4 F4F5       udiv             r4, r5      ; division par 2^16
+   39 0000001E F64F 7CFF       mov              r12, #0xFFFF
+   40 00000022 FBB4 F4FC       udiv             r4, r12     ; division par 2^16
                                                             
-   39 00000024         
-   40 00000024         
-   41 00000024         ;sortie ech vers pwm
-   42 00000024 4D06            ldr              r5,=TIM3_CCR3 ; on place l'@ de
-                                                             la sortie PWM 
-   43 00000026 602C            str              r4,[r5]
-   44 00000028         ;position ++
-   45 00000028 F101 0101       add              r1,#0x1
-   46 0000002C 6001            str              r1,[r0, #E_POS]
-   47 0000002E         
-   48 0000002E         fin
-   49 0000002E F04F 0600       mov              r6,#0x0000  ;
-   50 00000032 6006            str              r6,[r0, #E_POS] ;On mets la pos
-                                                            ition à zéro 
-   51 00000034         
-   52 00000034         ;sortie ech vers pwm
-   53 00000034 4D02            ldr              r5,=TIM3_CCR3 ; on place l'@ de
-                                                             la sortie PWM 
-   54 00000036 602C            str              r4,[r5]
-   55 00000038         
-   56 00000038 BC30            pop              {r4,r5}
-   57 0000003A 4770            bx               lr
-   58 0000003C                 endp
-   59 0000003C                 end
+   41 00000026         
+   42 00000026         
+   43 00000026         ;sortie ech vers pwm
+   44 00000026 F8DF C014       ldr              r12,=TIM3_CCR3 ; on place l'@ d
+                                                            e la sortie PWM 
+   45 0000002A F8CC 4000       str              r4,[r12]
+   46 0000002E         ;position ++
+   47 0000002E F101 0101       add              r1,#0x1
+   48 00000032 6001            str              r1,[r0, #E_POS]
+   49 00000034         fin
+   50 00000034 BC30            pop              {r4,r5}
+   51 00000036 4770            bx               lr
+   52 00000038                 endp
+   53 00000038                 end
               00000000 
               4000043C 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
@@ -121,13 +114,21 @@ dio.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-fin 0000002E
+boucle 0000000E
+
+Symbol: boucle
+   Definitions
+      At line 28 in file audio.s
+   Uses
+      At line 25 in file audio.s
+Comment: boucle used once
+fin 00000034
 
 Symbol: fin
    Definitions
-      At line 48 in file audio.s
+      At line 49 in file audio.s
    Uses
-      At line 24 in file audio.s
+      At line 26 in file audio.s
 Comment: fin used once
 moncode 00000000
 
@@ -141,12 +142,12 @@ timer_callback 00000000
 
 Symbol: timer_callback
    Definitions
-      At line 17 in file audio.s
+      At line 18 in file audio.s
    Uses
-      At line 4 in file audio.s
-      At line 9 in file audio.s
+      At line 5 in file audio.s
+      At line 10 in file audio.s
 
-3 symbols
+4 symbols
 
 
 
@@ -167,9 +168,8 @@ Symbol: E_POS
    Definitions
       At line 11 in file etat.inc
    Uses
-      At line 21 in file audio.s
-      At line 46 in file audio.s
-      At line 50 in file audio.s
+      At line 22 in file audio.s
+      At line 48 in file audio.s
 
 E_RES 0000000C
 
@@ -177,7 +177,7 @@ Symbol: E_RES
    Definitions
       At line 14 in file etat.inc
    Uses
-      At line 35 in file audio.s
+      At line 37 in file audio.s
 Comment: E_RES used once
 E_SON 00000008
 
@@ -185,7 +185,7 @@ Symbol: E_SON
    Definitions
       At line 13 in file etat.inc
    Uses
-      At line 27 in file audio.s
+      At line 29 in file audio.s
 Comment: E_SON used once
 E_TAI 00000004
 
@@ -193,13 +193,13 @@ Symbol: E_TAI
    Definitions
       At line 12 in file etat.inc
    Uses
-      At line 22 in file audio.s
+      At line 23 in file audio.s
 Comment: E_TAI used once
 GPIOB_BSRR 40010C10
 
 Symbol: GPIOB_BSRR
    Definitions
-      At line 6 in file audio.s
+      At line 7 in file audio.s
    Uses
       None
 Comment: GPIOB_BSRR unused
@@ -207,17 +207,10 @@ TIM3_CCR3 4000043C
 
 Symbol: TIM3_CCR3
    Definitions
-      At line 7 in file audio.s
+      At line 8 in file audio.s
    Uses
-      At line 42 in file audio.s
-      At line 53 in file audio.s
-
-
-
-
-ARM Macro Assembler    Page 2 Alphabetic symbol ordering
-Absolute symbols
-
+      At line 44 in file audio.s
+Comment: TIM3_CCR3 used once
 7 symbols
 
 
@@ -229,7 +222,7 @@ LongueurSon 00000000
 
 Symbol: LongueurSon
    Definitions
-      At line 12 in file audio.s
+      At line 13 in file audio.s
    Uses
       None
 Comment: LongueurSon unused
@@ -237,7 +230,7 @@ PeriodeSonMicroSec 00000000
 
 Symbol: PeriodeSonMicroSec
    Definitions
-      At line 13 in file audio.s
+      At line 14 in file audio.s
    Uses
       None
 Comment: PeriodeSonMicroSec unused
@@ -245,7 +238,7 @@ Son 00000000
 
 Symbol: Son
    Definitions
-      At line 14 in file audio.s
+      At line 15 in file audio.s
    Uses
       None
 Comment: Son unused
@@ -253,9 +246,9 @@ etat 00000000
 
 Symbol: etat
    Definitions
-      At line 11 in file audio.s
+      At line 12 in file audio.s
    Uses
-      At line 20 in file audio.s
+      At line 21 in file audio.s
 Comment: etat used once
 4 symbols
-351 symbols in table
+352 symbols in table
