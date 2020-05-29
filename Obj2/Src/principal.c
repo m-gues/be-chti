@@ -90,6 +90,7 @@ int main(void)
 	int cible_touchee =0;	
 	int score[6]={0,0,0,0,0,0};//Scores associés aux différents pistolets
 	int ajout_score[6]={0,0,0,0,0,0}; //Ajouts à faire aux scores définitifs
+	int valeur_led = 0;
 	
 	
 while(1)
@@ -99,7 +100,7 @@ while(1)
 				if (compt_occurences[i]>2) {
 					cible_touchee=1;
 					ajout_score[i]=1;
-					GPIO_Set(GPIOB, 14);
+					//GPIO_Set(GPIOB, 14);
 				}
 			}
 		while (cible_touchee>0){
@@ -111,7 +112,7 @@ while(1)
 				}
 			}
 		}
-		GPIO_Clear(GPIOB, 14);
+		//GPIO_Clear(GPIOB, 14);
 		for (int i=0; i<6; i++){
 			score[i]+=ajout_score[i];
 			ajout_score[i]=0;
