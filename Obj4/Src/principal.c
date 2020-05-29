@@ -4,9 +4,7 @@
 #define Periode_PWM_en_Tck 720
 #define M2TIR 985661
 
-// etat.position=0;
-
-//Demander pour la vérification de la LED
+//NB : ce programme a été conçu pour inclure l'allumage de la LED. Les lignes y correpondant ont été commentées.
 
 //librairie etat 
 type_etat etat;
