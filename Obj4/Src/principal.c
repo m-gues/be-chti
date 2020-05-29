@@ -105,7 +105,7 @@ etat.position=91;
 	// cette fonction doit être conforme à l'AAPCS
 	Active_IT_Debordement_Timer( TIM4, 2, timer_callback );		
 	// activation ADC, sampling time 1us
-	Init_TimingADC_ActiveADC_ff( ADC1, 0x31/*Changer la valeur test ici*/); 
+	Init_TimingADC_ActiveADC_ff( ADC1, 0x53/*Changer la valeur test ici*/); 
 	Single_Channel_ADC( ADC1, 2 );
 	// Déclenchement ADC par timer2, periode (72MHz/320kHz)ticks
 	Init_Conversion_On_Trig_Timer_ff( ADC1, TIM2_CC2, 225 );
@@ -132,7 +132,7 @@ while(1)
 		//Gestion du score
 		for (int i=0; i<6; i++){
 				if (compt_occurences[i]>2) {
-					etat.position=0;
+					etat.position=0; // Lorsque la cible est touché on remet la position à 0 pour la rémission du son 
 					cible_touchee=1;
 					ajout_score[i]=1;
 //				GPIO_Set(GPIOB, 14);

@@ -12,4 +12,4 @@ Objectif 2 : dft en réel et gestion du score, dossier Obj2 (fini), contient un 
 
 Objectif 3 : Obj 3(fini), vous trouverez un readme dans l'Obj 3 pour la visualisation du signal.
 
-Objectif 4 : 
+Objectif 4 : Obj 4(fini), readme explicatif dans le dossier l'obj 4. 
